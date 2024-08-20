@@ -85,3 +85,19 @@ window.addEventListener('DOMContentLoaded',() => {
 
     }, 300)
 })
+
+
+const btn1 = document.getElementById('btn1');
+const btn2 = document.getElementById('btn2');
+const content = document.getElementById('testcontent');
+
+// Add event listeners to the buttons
+btn1.addEventListener('click', function() {
+    // Update the content area when Button 1 is clicked
+    content.innerHTML = '<div id="content" class="flex ml-0"> <div> <img img  src="/assets/img/temp_01.png" alt=""> </div> </div>';
+});
+
+btn2.addEventListener('click', function() {
+    // Update the content area when Button 2 is clicked
+    content.innerHTML = '<h2>Content for Button 2</h2><p>This is the content for Button 2.</p>';
+});
