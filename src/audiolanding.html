@@ -184,6 +184,65 @@
         
       </a>
 
+             <!-- The Coloring Book -->
+    <a href="#" class="group relative grid grid-cols-1 row-span-3 bg-black">
+      <button id="modal-6"> <!-- Button#6 -->
+       <img alt="" src="../assets/img/audio/ilovethecoloringbook.png" class="absolute inset-0 h-full w-full object-cover opacity-75 transition-opacity group-hover:opacity-50"/>
+     
+       <div class="relative p-4 sm:p-6 lg:p-8">
+
+         <p class="text-sm font-medium Fot-Rodin uppercase tracking-widest text-black-500">MV</p>
+         <p class="text-xl Fot-Rodin text-white sm:text-2xl">The Coloring Book</p>
+         
+         <div class="mt-32 sm:mt-48 lg:mt-64">
+           <div class="translate-y-8 transform opacity-0 transition-all group-hover:translate-y-0 group-hover:opacity-100">
+             <p class="text-sm Fot-Rodin text-white">Drum Kit.</p>
+           </div>
+         </div>
+       </div>
+       </button>
+       
+     </a>
+
+            <!--From Me 2 U -->
+    <a href="#" class="group relative grid grid-cols-1 row-span-3 bg-black">
+      <button id="modal-7"> <!-- Button#7 -->
+       <img alt="" src="../assets/img/audio/fromme2u.png" class="absolute inset-0 h-full w-full object-cover opacity-75 transition-opacity group-hover:opacity-50"/>
+     
+       <div class="relative p-4 sm:p-6 lg:p-8">
+
+         <p class="text-sm font-medium Fot-Rodin uppercase tracking-widest text-black-500">MV</p>
+         <p class="text-xl Fot-Rodin text-white sm:text-2xl">From Me 2 U</p>
+         
+         <div class="mt-32 sm:mt-48 lg:mt-64">
+           <div class="translate-y-8 transform opacity-0 transition-all group-hover:translate-y-0 group-hover:opacity-100">
+             <p class="text-sm Fot-Rodin text-white">Experimental Electornic EP.</p>
+           </div>
+         </div>
+       </div>
+       </button>
+       
+     </a>
+
+            <!--Ensemble -->
+    <a href="#" class="group relative grid grid-cols-1 row-span-3 bg-black">
+      <button id="modal-8"> <!-- Button#8 -->
+       <img alt="" src="../assets/img/audio/ensemble.jpg" class="absolute inset-0 h-full w-full object-cover opacity-75 transition-opacity group-hover:opacity-50"/>
+     
+       <div class="relative p-4 sm:p-6 lg:p-8">
+
+         <p class="text-sm font-medium Fot-Rodin uppercase tracking-widest text-black-500">MV</p>
+         <p class="text-xl Fot-Rodin text-white sm:text-2xl">Ensemble</p>
+         
+         <div class="mt-32 sm:mt-48 lg:mt-64">
+           <div class="translate-y-8 transform opacity-0 transition-all group-hover:translate-y-0 group-hover:opacity-100">
+             <p class="text-sm Fot-Rodin text-white">Orchestral Jazz EP.</p>
+           </div>
+         </div>
+       </div>
+       </button>
+       
+     </a>
 
 </div>
 
@@ -232,19 +291,26 @@
   <iframe width="100%" height="100%" src="https://www.youtube.com/embed/4tYDKOEgPl4?si=wxrRPcCKXuw0ie4J" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
   </div>
  </dialog>
+
+ <dialog id="dialog-6" class="">
+  <div id="modal-container">
+  
+  </div>
+ </dialog>
+
+ <dialog id="dialog-7" class="">
+  <div id="modal-container">
+  <iframe width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/1966777860&color=%23444444&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe><div style="font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;"><a href="https://soundcloud.com/knd2" title="knd" target="_blank" style="color: #cccccc; text-decoration: none;">knd</a> · <a href="https://soundcloud.com/knd2/sets/from-me-to-u" title="from me to u" target="_blank" style="color: #cccccc; text-decoration: none;">from me to u</a></div>
+  </div>
+ </dialog>
+
+ <dialog id="dialog-8" class="">
+  <div id="modal-container">
+  
+  </div>
+ </dialog>
  
 </div>
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -256,12 +322,18 @@
         const btn3 = document.getElementById("modal-3");
         const btn4 = document.getElementById("modal-4");
         const btn5 = document.getElementById("modal-5");
+        const btn6 = document.getElementById("modal-6");
+        const btn7 = document.getElementById("modal-7");
+        const btn8 = document.getElementById("modal-8");
         
         const dialogElement1 = document.getElementById("dialog-1");
         const dialogElement2 = document.getElementById("dialog-2");
         const dialogElement3 = document.getElementById("dialog-3");
         const dialogElement4 = document.getElementById("dialog-4");
         const dialogElement5 = document.getElementById("dialog-5");
+        const dialogElement6 = document.getElementById("dialog-6");
+        const dialogElement7 = document.getElementById("dialog-7");
+        const dialogElement8 = document.getElementById("dialog-8");
         
         
           dialogElement1.addEventListener('click', (event) => {
@@ -324,6 +396,42 @@
             
           });
           
+          dialogElement6.addEventListener('click', (event) => {
+            if (event.target == dialogElement5) {
+              dialogElement5.classList.add('fade-out')
+              setTimeout(()=>{
+                dialogElement5.close();
+                dialogElement5.classList.remove('fade-out')
+              },500)
+              
+            }
+            
+          });
+
+          dialogElement7.addEventListener('click', (event) => {
+            if (event.target == dialogElement5) {
+              dialogElement5.classList.add('fade-out')
+              setTimeout(()=>{
+                dialogElement5.close();
+                dialogElement5.classList.remove('fade-out')
+              },500)
+              
+            }
+          8
+          });
+
+          dialogElement8.addEventListener('click', (event) => {
+            if (event.target == dialogElement5) {
+              dialogElement5.classList.add('fade-out')
+              setTimeout(()=>{
+                dialogElement5.close();
+                dialogElement5.classList.remove('fade-out')
+              },500)
+              
+            }
+            
+          });
+          
           
           
           btn1.addEventListener('click', () => {
@@ -347,6 +455,21 @@
           });
 
           btn5.addEventListener('click', () => {
+            dialogElement5.classList.add('fade-in');
+             dialogElement5.showModal(); 
+          });
+
+          btn6.addEventListener('click', () => {
+            dialogElement5.classList.add('fade-in');
+             dialogElement5.showModal(); 
+          });
+
+          btn7.addEventListener('click', () => {
+            dialogElement5.classList.add('fade-in');
+             dialogElement5.showModal(); 
+          });
+
+          btn8.addEventListener('click', () => {
             dialogElement5.classList.add('fade-in');
              dialogElement5.showModal(); 
           });
