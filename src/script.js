@@ -105,7 +105,7 @@ const projects = [
     const projectList = document.getElementById("projectList");
     projects.forEach((project, index) => {
       const listItem = document.createElement("li");
-      listItem.className = "p-4 cursor-pointer hover:bg-gray-300 hover:text-white text-xs";
+      listItem.className = "p-4 cursor-pointer hover:bg-gray-300 hover:text-white text-sm";
       listItem.textContent = project.title;
       listItem.addEventListener("click", () => displayProjectDetails(index));
       projectList.appendChild(listItem);
@@ -127,3 +127,5 @@ const projects = [
     renderProjectList();
     displayProjectDetails(0); // Display the first project by default
   });
+
+  
