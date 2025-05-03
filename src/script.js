@@ -118,7 +118,7 @@ const projects = [
     const projectDetails = document.getElementById("projectDetails");
     projectDetails.innerHTML = `
       ${project.soundcloudEmbed}
-      <img class="p-2" src="${project.image}" alt="${project.title}" class="mb-4 w-full h-auto object-cover"/>
+      <img class="p-2 content-center" src="${project.image}" alt="${project.title}" class="mb-4 w-full h-auto object-cover"/>
     `;
   }
   
