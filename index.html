@@ -1,191 +1,148 @@
 <!doctype html>
 <html>
 <head>
+  <style>
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
   <script>
     (function(d) {
       var config = {
         kitId: 'zeh7vtj',
         scriptTimeout: 3000,
         async: true
-      },  
+      },
       h=d.documentElement,t=setTimeout(function(){h.className=h.className.replace(/\bwf-loading\b/g,"")+" wf-inactive";},config.scriptTimeout),tk=d.createElement("script"),f=false,s=d.getElementsByTagName("script")[0],a;h.className+=" wf-loading";tk.src='https://use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
     })(document);
   </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="./dist/output.css" rel="stylesheet">
+  <link href="../dist/output.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@%5E2.0/dist/tailwind.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="./dist/rodin.css">
+  <link rel="stylesheet" href="../dist/rodin.css">
 </head>
-<body>
+<body class="fade-in fade-in visible">
   <!-- NAV BAR -->
-<nav class="border-gray-200 bg-slate-50 rounded-lg">
+  <nav class="border-gray-200 bg-slate-50 rounded-lg">
     
-  <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-      <a href="#" class="flex items-center">
-        <span class="self-center text-2xl font-semibold Fot-Rodin whitespace-nowrap dark:text-black"><h1>SAI H.</h1></span>  
-      </a>    
-   
-      
-      
-      <div class="flex w-full flex-wrap items-center justify-between px-3 sha">
-        <nav class="w-full rounded-md" aria-label="breadcrumb">
-          <ol class="list-reset ml-2 flex">
-            <li>
-              <a
-                href="index.html"
-                class="text-neutral-500 transition duration-200 hover:text-neutral-600 hover:ease-in-out motion-reduce:transition-none dark:text-neutral-200"
-                >Home</a
-              >
-            </li>
-            <li>
-              <span class="mx-2 text-neutral-500 dark:text-neutral-200"
-                >|</span
-              >
-            </li>
-            <li>
-              <a
-                href="./src/audiolanding.html"
-                class="text-neutral-500 transition duration-200 hover:text-neutral-600 hover:ease-in-out motion-reduce:transition-none dark:text-neutral-200"
-                >Audio</a
-              >
-            </li>
-            <li>
-              <span class="mx-2 text-neutral-500 dark:text-neutral-200"
-                >|</span
-              >
-            </li>
-            <li>
-              <a
-                href="./src/menu.html"
-                class="text-neutral-500 transition duration-200 hover:text-neutral-600 hover:ease-in-out motion-reduce:transition-none dark:text-neutral-200"
-                >Library</a
-              >
-            </li>
-          </ol>
-        </nav>
-      </div>
-    </div>
-  </nav>
-  
-  
-  <main>
-    <div class="m-4 grid gap-4 lg:grid-cols-2 sm:grid-cols-2"> <!--Hero-->  
-      
-      <div class="transform box-content p-4 justify-self-center hover:scale-110 duration-300 ease-out hover:ease-in">
-        <a href="./src/audiolanding.html"><img  style="width: 500px; height: 445px; object-fit: cover; object-position:  -20% 0;" src="./assets/img/audio/alabaster.jpg" class="rounded-xl" alt="Temp01"></a>
-        <div>
-          <ul>
-            <h1 class="text-xl text-center Fot-Rodin">
-              Alabaster
-            </h1>
-  
-            <li class="flex flex-col-reverse basis-1 text-center">  
-              <p class="text-sm text-center Fot-Rodin text-gray-500">
-                  EP 2024
-              </p>
-            </li>
-         </ul>
-  
-      </div>
+    <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+        <a href="#" class="flex items-center">
+          <span class="self-center text-2xl font-semibold Fot-Rodin whitespace-nowrap dark:text-black"><h1>SAI H.</h1></span>  
+        </a>    
+     
+        
+        
+        <div class="flex w-full flex-wrap items-center justify-between px-3 sha">
+          <nav class="w-full rounded-md" aria-label="breadcrumb">
+            <ol class="list-reset ml-2 flex">
+              <li>
+                <a
+                  href="index.html"
+                  class="text-neutral-500 transition duration-200 hover:text-neutral-600 hover:ease-in-out motion-reduce:transition-none dark:text-neutral-200"
+                  >Home</a
+                >
+              </li>
+              <li>
+                <span class="mx-2 text-neutral-500 dark:text-neutral-200"
+                  >|</span
+                >
+              </li>
 
-      </div>
-      
-      
-      <div class="transform box-content p-4 justify-self-center hover:scale-110 duration-300 ease-out hover:ease-in">
-        <a href="./src/audiolanding.html"><img style = "width: 500px; height: 445px; object-fit: cover; object-position:  -20% 0;" src="./assets/img/audio/breakfromgrace.jpg" class="rounded-lg" alt="Temp01"></a>
-        <div>
-          <ul>
-            <h1 class="text-xl text-center Fot-Rodin">
-              Break From Grace
-            </h1>
-  
-            <li class="flex flex-col-reverse basis-1 text-center">  
-              <p class="text-sm text-center Fot-Rodin text-gray-500">
-                  EP 2023
-              </p>
-            </li>
-         </ul>
-  
-      </div>
-
-      </div>
-    
-    </div> <!--Hero-->
-  
-
-  <!-- Content -->  
-  
-  
-    
-
-    
-  
-
-    
-  <div class="p-4 m-4 mb-12 grid gap-4 lg:grid-cols-4 sm:grid-cols-2">
-      
-      <a href="./src/blog.html">
-        <div class="transform min-h-[100px] rounded-lg shadow-lg hover:scale-110 duration-300 ease-out hover:ease-in">
-        <img src="./assets/img/artwork/blog-post.png" alt=""></div> <!-- Img Size 1000px 1000px -->
-      </a>  
-
-      <a href="./src/blog.html">
-        <div class="transform min-h-[100px] rounded-lg shadow-lg hover:scale-110 duration-300 ease-out hover:ease-in">
-          <img src="./assets/img/artwork/blog-post-02.png" alt=""></div> <!-- Img Size 1000px 1000px -->
-      </a>
-
-    <div class="transform min-h-[100px] rounded-lg shadow-lg hover:scale-110 duration-300 ease-out hover:ease-in"><img src="./assets/img/temp_05.png" alt=""></div>
-    <div class="transform min-h-[100px] rounded-lg shadow-lg hover:scale-110 duration-300 ease-out hover:ease-in"><img src="./assets/img/temp_05.png" alt=""></div>
-  </div>
-
-
-  </main>
-  
-
-
-  <footer class="bg-white rounded-lg">
-    <div class="relative mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8 lg:pt-24">
-  
-      <div class="lg:flex lg:items-end lg:justify-between"> 
-        <div>
-          <div class="flex justify-center text-black-600 lg:justify-start">
-           <h1>"Every step forward is one twoards progress." #3A</h1>
-          
-          </div>
-  
-          <p class="mx-auto mt-6 max-w-md text-center leading-relaxed text-gray-500 lg:text-left">
-            For any further inquiry please message me on my music pages.
-          </p>
-  
+              <li>
+                <a
+                  href="./src/menu.html"
+                  class="text-neutral-500 transition duration-200 hover:text-neutral-600 hover:ease-in-out motion-reduce:transition-none dark:text-neutral-200"
+                  >Library</a
+                >
+              </li>
+            </ol>
+          </nav>
         </div>
-  
-        <ul
-          class="mt-12 flex flex-wrap justify-center gap-6 md:gap-8 lg:mt-0 lg:justify-end lg:gap-12"
-        >
-        <li>
-          <a class="text-gray-700 transition hover:text-gray-700/75" href="./src/about.html"> Contact </a>
-        </li>
+      </div>
+    </nav>
 
-        <li>
-          <a class="text-gray-700 transition hover:text-gray-700/75" href="./src/artlanding.html"> Art </a>
-        </li>
 
-        <li>
-          <a class="text-gray-700 transition hover:text-gray-700/75" href="./src/audiolanding.html"> Audio </a>
-        </li>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-        <li>
-          <a class="text-gray-700 transition hover:text-gray-700/75" href="./src/blog.html"> Blog </a>
-        </li>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-white text-black">
+    <div class="flex h-screen">
+      <!-- Left Panel: Project List -->
+      <div class="w-1/2 overflow-y-auto">
+        <ul id="projectList" class="divide-y divide-gray-25">
+          <!-- Project buttons will be injected here -->
         </ul>
       </div>
   
-      <p class="mt-12 text-center text-sm text-gray-500 lg:text-right">
-      </p>
-      
+      <!-- Right Panel: Project Details -->
+      <div class="w-full p-8 overflow-y-auto">
+        <div id="projectDetails">
+          <!-- Selected project details will be displayed here -->
+        </div>
+      </div>
     </div>
+  
+    <script src="src/script.js"></script>
+  </body>
+      
 
-  </footer>
-<script src="./src/main.js"></script>
-</html>
+  
+    
+
+      <footer class="bg-white rounded-lg">
+        <div class="relative mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8 lg:pt-24">
+      
+          <div class="lg:flex lg:items-end lg:justify-between">
+            <div>
+              <div class="flex justify-center text-black-600 lg:justify-start">
+               <h1>"Every step forward is one twoards progress." #3A</h1>
+              
+              </div>
+      
+              <p class="mx-auto mt-6 max-w-md text-center leading-relaxed text-gray-500 lg:text-left">
+                For any further inquiry please message me on my music pages.
+              </p>
+      
+            </div>
+      
+            <ul
+              class="mt-12 flex flex-wrap justify-center gap-6 md:gap-8 lg:mt-0 lg:justify-end lg:gap-12"
+            >
+            <li>
+              <a class="text-gray-700 transition hover:text-gray-700/75" href="../src/about.html"> Contact </a>
+            </li>
+    
+            <li>
+              <a class="text-gray-700 transition hover:text-gray-700/75" href="../src/artlanding.html"> Art </a>
+            </li>
+    
+            <li>
+              <a class="text-gray-700 transition hover:text-gray-700/75" href="../src/audiolanding.html"> Audio </a>
+            </li>
+    
+            <li>
+              <a class="text-gray-700 transition hover:text-gray-700/75" href="../src/blog.html"> Blog </a>
+            </li>
+            </ul>
+          </div>
+      
+          <p class="mt-12 text-center text-sm text-gray-500 lg:text-right">
+          </p>
+          
+        </div>
+        <script src="../src/main.js"></script>
+      </footer>
+
+
+      
