@@ -94,11 +94,7 @@ const projects = [
     {
         id: 6,
         title: "MISC.",
-        soundcloudEmbed: "DRUM KITS",
-        soundcloudEmbed: `<a href="https://www.patreon.com/c/knd33xo">
-<img src="/assets/img/audio/ilovethecoloringbook.png"  alt="" >
-</a>`,
-        
+        soundcloudEmbed: `<a href="https://www.patreon.com/c/knd33xo"> <img src="/assets/img/audio/ilovethecoloringbook.png"  alt="" > </a>`,
         image: "assets/img/78pxLogoCrossARC33xo.png",
     
     },
