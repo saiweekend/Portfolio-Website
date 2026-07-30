@@ -1,6 +1,28 @@
 // Sample project data
 const projects = [
-    {
+  {
+      id: 7,
+      title: "2026 · WITCH HAT ATELIER AR",
+      image: "assets/img/audio/WHA.jpg", // Replace with actual image URL
+      soundcloudEmbed: `<iframe width="560" height="315" src="https://www.youtube.com/embed/HjyKMGPfv7Q?si=CZjh69qfIdtI5UUS" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>`
+    },  
+  
+  
+  {
+      id: 7,
+      title: "2026 · WOULD YOU LOVE ME",
+      image: "assets/img/audio/WYLM.jpg", // Replace with actual image URL
+      soundcloudEmbed: `<iframe width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay; encrypted-media" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/soundcloud%253Atracks%253A2341904348&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe><div style="font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;"><a href="https://soundcloud.com/knd2" title="fua" target="_blank" style="color: #cccccc; text-decoration: none;">fua</a> · <a href="https://soundcloud.com/knd2/would-you-love-me-wav" title="WOULD YOU LOVE ME" target="_blank" style="color: #cccccc; text-decoration: none;">WOULD YOU LOVE ME</a></div>`
+    },  
+  
+  {
+      id: 7,
+      title: "2026 · Day Cycle",
+      image: "assets/img/audio/daycycle.jpg", // Replace with actual image URL
+      soundcloudEmbed: `<iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/album/3xvcrul9WNHXusqOBLIatU?utm_source=generator&si=9e6c33a6ddea4774" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>`
+    },  
+  
+  {
       id: 1,
       title: "2025 · itsgo1ng2be0k w/ recyclexbin",
       image: "assets/img/audio/itsgoingtobeok.png", // Replace with actual image URL
