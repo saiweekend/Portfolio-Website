@@ -1,143 +1,136 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <style>
-    .fade-in {
-      opacity: 0;
-      transform: translateY(20px);
-      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-    }
-
-    .fade-in.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  </style>
-
-
-  <script>
-    (function(d) {
-      var config = {
-        kitId: 'zeh7vtj',
-        scriptTimeout: 3000,
-        async: true
-      },
-      h=d.documentElement,t=setTimeout(function(){h.className=h.className.replace(/\bwf-loading\b/g,"")+" wf-inactive";},config.scriptTimeout),tk=d.createElement("script"),f=false,s=d.getElementsByTagName("script")[0],a;h.className+=" wf-loading";tk.src='https://use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
-    })(document);
-  </script>
-
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="../dist/output.css" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@%5E2.0/dist/tailwind.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="../dist/rodin.css">
-  <script src="https://cdn.tailwindcss.com"></script>
-  
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>C. Sai Hallie — Music Library</title>
+<meta name="description" content="Music library and audio work by C. Sai Hallie.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Share+Tech&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
 </head>
+<body>
 
-<body class="fade-in fade-in visible">
-  <!-- NAV BAR -->
-  <nav class="border-gray-200 bg-slate-50 rounded-lg">
-    
-    <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-        <a href="#" class="flex items-center">
-          <span class="self-center text-2xl font-semibold Fot-Rodin whitespace-nowrap dark:text-black"><h1>SAI H.</h1></span>  
-        </a>    
-     
-        
-        
-        <div class="flex w-full flex-wrap items-center justify-between px-3 sha">
-          <nav class="w-full rounded-md" aria-label="breadcrumb">
-            <ol class="list-reset ml-2 flex">
-              <li>
-                <a
-                  href="index.html"
-                  class="text-neutral-500 transition duration-200 hover:text-neutral-600 hover:ease-in-out motion-reduce:transition-none dark:text-neutral-200"
-                  >Home</a
-                >
-              </li>
-              <li>
-                <span class="mx-2 text-neutral-500 dark:text-neutral-200"
-                  >|</span
-                >
-              </li>
+<!-- ── BOOT SCREEN (home only) ─────────────────────────────── -->
+<div id="boot" role="status" aria-live="polite">
+  <div class="boot-corner tl"></div>
+  <div class="boot-corner tr"></div>
+  <div class="boot-corner bl"></div>
+  <div class="boot-corner br"></div>
+  <div class="boot-log" id="bootLog"></div>
+  <div class="boot-logo">C. SAI HALLIE</div>
+  <div class="boot-sub">AUDIO LIBRARY // SYSTEM INIT</div>
+  <div class="boot-bar-wrap"><div class="boot-bar-fill" id="bootBar"></div></div>
+  <div class="boot-msg" id="bootMsg">INITIALIZING...</div>
+</div>
 
-              <li>
-                <a
-                  href="./src/menu.html"
-                  class="text-neutral-500 transition duration-200 hover:text-neutral-600 hover:ease-in-out motion-reduce:transition-none dark:text-neutral-200"
-                  >Library</a
-                >
-              </li>
-            </ol>
-          </nav>
-        </div>
-      </div>
-    </nav>
+<!-- ── NAV ─────────────────────────────────────────────────── -->
+<nav class="top">
+  <div class="nav-id"><span class="lbl">ID:</span>CSH-AUDIO-01</div>
+  <ul class="nav-links">
+    <li><a href="index.html" class="current">Library</a></li>
+    <li><a href="programming.html">Programming</a></li>
+    <li><a href="art.html">Artwork</a></li>
+    <li><a href="blog.html">Journal</a></li>
+    <li><a href="about.html">Contact</a></li>
+  </ul>
+  <div class="nav-ver">v2.0 // 2025</div>
+</nav>
 
+<!-- ── MUSIC LIBRARY ───────────────────────────────────────── -->
+<main class="home-inner">
 
-  <body class="bg-white text-black">
-    <div class="flex h-screen">
-      <!-- Left Panel: Project List -->
-      <div class="w-1/2 overflow-y-auto">
-        <ul id="projectList" class="divide-y divide-gray-25">
-          <!-- Project buttons will be injected here -->
-        </ul>
-      </div>
-  
-      <!-- Right Panel: Project Details -->
-      <div class="w-full p-8 overflow-y-auto">
-        <div id="projectDetails">
-          <!-- Selected project details will be displayed here -->
-        </div>
-      </div>
+  <!-- Left: track list -->
+  <aside class="track-list">
+    <div class="track-list-head">Field Audio Log</div>
+    <div class="track-list-head-sub">Select entry to establish playback</div>
+    <ul id="trackList"></ul>
+  </aside>
+
+  <!-- Right: embed viewer -->
+  <section class="embed-viewer">
+    <div class="embed-head">
+      <div class="embed-title" id="embedTitle">SELECT ENTRY</div>
+      <div class="embed-label">AUDIO SYSTEM ACTIVE</div>
     </div>
-    
-  </body>
+    <div id="embedContent"></div>
+    <div class="home-quote">「Every step forward is one towards progress.」 #3A</div>
+  </section>
 
-  
+</main>
 
-      <footer class="bg-white rounded-lg">
-        <div class="relative mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8 lg:pt-24">
-      
-          <div class="lg:flex lg:items-end lg:justify-between">
-            <div>
-              <div class="flex justify-center text-black-600 lg:justify-start">
-               <h1>"Every step forward is one towards progress." #3A</h1>
-              
-              </div>
-      
-              <p class="mx-auto mt-6 max-w-md text-center leading-relaxed text-gray-500 lg:text-left">
-                For any further inquires please message me on my music pages.
-              </p>
-      
-            </div>
-      
-            <ul
-              class="mt-12 flex flex-wrap justify-center gap-6 md:gap-8 lg:mt-0 lg:justify-end lg:gap-12"
-            >
-            <li>
-              <a class="text-gray-700 transition hover:text-gray-700/75" href="../src/about.html"> Contact </a>
-            </li>
-    
-            <li>
-              <a class="text-gray-700 transition hover:text-gray-700/75" href="../src/artlanding.html"> Art </a>
-            </li>
-    
-    
-            <li>
-              <a class="text-gray-700 transition hover:text-gray-700/75" href="../src/blog.html"> Blog </a>
-            </li>
-            </ul>
-          </div>
-      
-          <p class="mt-12 text-center text-sm text-gray-500 lg:text-right">
-          </p>
-          
-        </div>
-        <script src="/src/main.js"></script>
-        <script src="./src/script.js"></script> 
-      </footer>
+<!-- ── FOOTER (links to the 4 other pages) ─────────────────── -->
+<footer class="main">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="footer-quote">C. SAI HALLIE // AUDIO DESIGNER</div>
+      <div class="footer-note">MUSIC · SOUND DESIGN · WWISE · FMOD</div>
+    </div>
+    <div>
+      <div class="footer-nav-lbl">Navigate</div>
+      <ul class="footer-nav">
+        <li><a href="programming.html"><span>Programming</span></a></li>
+        <li><a href="art.html"><span>Artwork</span></a></li>
+        <li><a href="blog.html"><span>Journal</span></a></li>
+        <li><a href="about.html"><span>Contact</span></a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div>UNIT <span class="lbl">CSH-AUDIO-01</span> // <span class="lbl">2025</span></div>
+    <div>SAIHALLIE.COM</div>
+  </div>
+</footer>
+
+
+
+<script src="main.js"></script>
+<script>
+/* ── TRACK DATA (from original script.js) ─────────────────── */
+const tracks=[
+  {id:1,title:"2026 · WITCH HAT ATELIER AR",embed:`<iframe width="100%" height="315" src="https://www.youtube.com/embed/HjyKMGPfv7Q?si=CZjh69qfIdtI5UUS" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>`},
+  {id:2,title:"2026 · WOULD YOU LOVE ME",embed:`<iframe width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay; encrypted-media" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/soundcloud%253Atracks%253A2341904348&color=%238a6c3a&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe><img src="/assets/img/audio/WYLM.jpg" alt="">`},
+  {id:3,title:"2026 · DAY CYCLE",embed:`<iframe style="border-radius:4px" src="https://open.spotify.com/embed/album/3xvcrul9WNHXusqOBLIatU?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe><img src="/assets/img/audio/daycycle.jpg" alt="">`},
+  {id:4,title:"2025 · ITSGO1NG2BE0K w/ RECYCLEXBIN",embed:`<iframe style="border-radius:4px" src="https://open.spotify.com/embed/track/4wki2cX85Gwe6DOttqGND9?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe><img src="/assets/img/audio/itsgoingtobeok.png" alt="">`},
+  {id:5,title:"2025 · FROM ME 2 U",embed:`<iframe style="border-radius:4px" src="https://open.spotify.com/embed/album/7yHay8Z6F7FxUi0PTACVie?utm_source=generator&theme=0" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe><img src="/assets/img/audio/Simon-Says-Spectorama.png" alt="">`},
+  {id:6,title:"2024 · ENSEMBLE",embed:`<iframe style="border-radius:4px" src="https://open.spotify.com/embed/album/6KpLoYJT82I5ZARDJIMNaJ?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe><img src="/assets/img/audio/ensemble.jpg" alt="">`},
+  {id:7,title:"2024 · ALABASTER & THE BASTARD SON",embed:`<iframe style="border-radius:4px" src="https://open.spotify.com/embed/album/04TAaaEhlxIMpEi5DdnhrM?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe><img src="/assets/img/audio/alabaster.jpg" alt="">`},
+  {id:8,title:"2024 · SEPTEMBER SOLOS",embed:`<iframe width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1925227388&color=%238a6c3a&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe>`},
+  {id:9,title:"2024 · APRIL SOLOS",embed:`<iframe width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1814096934&color=%238a6c3a&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe>`},
+  {id:10,title:"2023 · BREAK FROM GRACE",embed:`<iframe style="border-radius:4px" src="https://open.spotify.com/embed/album/1jSbvC2b2vZYEcpRCu6hqw?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe><img src="/assets/img/audio/breakfromgrace.jpg" alt="">`},
+  {id:11,title:"2021 · PAIN IN POETRY",embed:`<iframe style="border-radius:4px" src="https://open.spotify.com/embed/album/59N7fvQYTb8doHa6YKAtmo?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe><img src="/assets/img/audio/PART3!.jpg" alt="">`},
+  {id:12,title:"2024–2025 · COLLABORATIONS",embed:`
+    <iframe style="border-radius:4px" src="https://open.spotify.com/embed/track/0plHrAqS0VRyv9YBWxmq0s?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+    <iframe style="border-radius:4px" src="https://open.spotify.com/embed/track/5n27iCLIsotivPFdc53mCQ?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+    <iframe width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/2017635273&color=%238a6c3a&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe>
+    <iframe width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1975587043&color=%238a6c3a&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe>
+    <iframe width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1789433338&color=%238a6c3a&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe>`},
+  {id:13,title:"MISC.",embed:`<a href="https://www.patreon.com/c/knd33xo" target="_blank" rel="noopener"><img src="/assets/img/audio/ilovethecoloringbook.png" alt="Patreon" style="max-width:100%;border:1px solid var(--border-dim);"></a>`}
+];
+
+function renderTracks(){
+  const ul=document.getElementById('trackList');
+  tracks.forEach((t,i)=>{
+    const li=document.createElement('li');
+    li.className='track-item';
+    li.innerHTML=`<span class="track-num">${String(i+1).padStart(2,'0')}</span><span>${t.title}</span>`;
+    li.addEventListener('click',()=>loadTrack(i));
+    ul.appendChild(li);
+  });
+}
+function loadTrack(idx){
+  document.querySelectorAll('.track-item').forEach((el,i)=>{
+    el.classList.toggle('active',i===idx);
+  });
+  document.getElementById('embedTitle').textContent=tracks[idx].title;
+  document.getElementById('embedContent').innerHTML=tracks[idx].embed;
+}
+document.addEventListener('DOMContentLoaded',()=>{
+  renderTracks();
+  loadTrack(0);
+});
+</script>
+
 </body>
-
-      
+</html>
