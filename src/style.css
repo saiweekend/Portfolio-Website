@@ -219,9 +219,20 @@ main{min-height:calc(100vh - var(--nav-h) - 200px);}
   background:rgba(138,108,58,0.08);border:1px solid var(--border);
   padding:0.2rem 0.5rem;margin-left:auto;
 }
-#embedContent{flex:1;font-family:var(--mono);font-size:0.72rem;color:var(--muted);}
-#embedContent iframe{width:100%;border:none;display:block;margin-bottom:0.8rem;}
-#embedContent img{max-width:100%;height:auto;border:1px solid var(--border-dim);}
+#embedContent{flex:1;font-family:var(--mono);font-size:0.72rem;color:var(--muted);text-align:center;}
+#embedContent iframe{width:100%;max-width:100%;border:none;display:block;margin:0 auto 0.8rem;}
+#embedContent img{
+  display:block;
+  max-width:min(100%,300px);
+  height:auto;
+  margin:1.2rem auto 1.5rem;
+  padding:8px;
+  background:var(--surface);
+  border:1px solid var(--border-dim);
+  transition:border-color 0.2s,transform 0.3s;
+}
+#embedContent img:hover{border-color:var(--gold-dim);}
+#embedContent a{display:block;text-decoration:none;}
 .home-quote{
   margin-top:2rem;padding-top:1.5rem;border-top:1px solid var(--border-dim);
   font-family:var(--mono);font-size:0.72rem;color:var(--gold);
@@ -530,4 +541,64 @@ footer.main::before{
 @media(max-width:480px){
   .nav-links li:nth-child(n+4){display:none;}
   .about-portrait{max-width:220px;margin:0 auto;}
+}
+
+/* ══════════════════════════════════════════════════════════════
+   PROGRAMMING · Featured project entry (Music Library SQL)
+   ══════════════════════════════════════════════════════════════ */
+
+/* Live status badge - pulsing indicator */
+.proj-badge-live{
+  color:var(--gold)!important;
+  font-weight:400;
+  letter-spacing:0.22em;
+}
+.proj-badge-live::before{
+  content:'●';
+  margin-right:0;
+  animation:proj-pulse 2s ease-in-out infinite;
+}
+@keyframes proj-pulse{
+  0%,100%{opacity:1}
+  50%{opacity:0.35}
+}
+
+/* Code block inside project entry */
+.proj-code{
+  background:var(--panel);
+  border:1px solid var(--border-dim);
+  border-left:2px solid var(--gold);
+  padding:1.1rem 1.3rem;
+  margin:1rem 0 1.2rem;
+  font-family:var(--mono);
+  font-size:0.78rem;
+  line-height:1.7;
+  color:var(--ink-mid);
+  overflow-x:auto;
+  white-space:pre;
+  position:relative;
+}
+.proj-code::before{
+  content:attr(data-lang);
+  position:absolute;
+  top:0.4rem;right:0.9rem;
+  font-family:var(--mono);
+  font-size:0.55rem;
+  color:var(--gold);
+  letter-spacing:0.22em;
+  text-transform:uppercase;
+  opacity:0.7;
+}
+
+/* Action buttons row (CTA) */
+.proj-actions{
+  display:flex;
+  gap:0.7rem;
+  flex-wrap:wrap;
+  margin:1.5rem 0 1rem;
+}
+
+/* Highlighted featured entry - subtle gold left border */
+.proj-featured{
+  border-left:2px solid var(--gold-dim)!important;
 }

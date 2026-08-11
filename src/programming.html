@@ -45,6 +45,51 @@
 
    <div class="blog-list reveal">
 
+      <!-- ═════ MUSIC LIBRARY SQL · LIVE PROJECT ═════ -->
+      <article class="blog-post proj-featured">
+        <div class="corner tl"></div>
+        <div class="blog-head">
+          <span class="blog-num">// 04</span>
+          <span class="blog-title">MUSIC LIBRARY &middot; SQL</span>
+          <span class="blog-date proj-badge-live">● LIVE</span>
+          <span class="blog-toggle">+</span>
+        </div>
+        <div class="blog-body">
+          <div class="blog-body-inner">
+            <div class="blog-img">
+              <img src="/assets/img/programming/sql-library.svg" alt="Music Library SQL" loading="lazy" onerror="this.parentElement.innerHTML='<div class=&quot;blog-img-placeholder&quot;>MUSIC LIBRARY SQL</div>'">
+            </div>
+            <div class="blog-text">
+              <p>
+                A normalized SQLite catalog of my Spotify Liked Songs.
+                Full ETL pipeline, analytical Jupyter notebook,
+                and an in-browser SQL terminal running SQLite via WebAssembly.
+                Doubles as a sound-design reference &mdash; query for tempo, key, and genre
+                to find candidate tracks for whatever I'm scoring.
+              </p>
+              <p>
+                <strong>Stack:</strong> SQLite &middot; Python &middot; Spotify Web API &middot; sql.js (WASM)<br>
+                <strong>Schema:</strong> 10 tables in 3NF, 7 indexes, 2 convenience views
+              </p>
+              <p>The query I actually use:</p>
+              <pre class="proj-code" data-lang="SQL">-- Find chill reference tracks near 75 BPM in a minor key
+SELECT track_name, primary_artist, ROUND(tempo, 1) AS bpm, key
+FROM v_tracks_full
+JOIN user_likes USING(track_id)
+WHERE tempo BETWEEN 70 AND 80
+  AND mode = 0
+ORDER BY ABS(tempo - 75)
+LIMIT 10;</pre>
+              <div class="proj-actions">
+                <a class="btn primary" href="/src/sql-terminal/"><span>&#9656; Open SQL Terminal</span></a>
+                <a class="btn" href="https://github.com/saiweekend/music-library-sql" target="_blank" rel="noopener"><span>&#9671; View Source</span></a>
+              </div>
+              <div class="blog-sig">エンドオブソロウ | Signed 33xo.</div>
+            </div>
+          </div>
+        </div>
+      </article>
+
       <!-- Post 1 -->
       <article class="blog-post">
         <div class="corner tl"></div>
@@ -114,7 +159,6 @@
 
   </div>
 </main>
-</main>
 
 <!-- ── FOOTER (4 other pages) ──────────────────────────────── -->
 <footer class="main">
@@ -126,7 +170,7 @@
     <div>
       <div class="footer-nav-lbl">Navigate</div>
       <ul class="footer-nav">
-        <li><a href="/index.html"><span>Library</span></a></li>
+        <li><a href="index.html"><span>Library</span></a></li>
         <li><a href="art.html"><span>Artwork</span></a></li>
         <li><a href="blog.html"><span>Journal</span></a></li>
         <li><a href="about.html"><span>Contact</span></a></li>
