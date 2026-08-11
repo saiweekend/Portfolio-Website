@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>C. Sai Hallie — SQL Terminal</title>
+<meta name="description" content="Query my music library live in your browser. SQLite via WebAssembly.">
+<link rel="stylesheet" href="../style.css">
+<style>
+/* Terminal-specific extensions to the shared theme */
+:root{ --ok:#2d7a3e; --err:#a03434; }
+.term-container{max-width:1080px;margin:0 auto;padding:0 2.5rem;}
+@media(max-width:640px){.term-container{padding:0 1.2rem;}}
+
+.stat-bar{
+  display:flex;gap:1.5rem;flex-wrap:wrap;margin:1.5rem 0;
+  padding:1rem 1.2rem;border:1px solid var(--border-dim);background:var(--surface);
+  font-family:var(--mono);font-size:0.68rem;color:var(--muted);letter-spacing:0.12em;
+}
+.stat-bar .stat b{color:var(--gold);font-weight:400;}
+.boot-status{
+  font-family:var(--mono);font-size:0.7rem;color:var(--muted);
+  padding:0.7rem 1rem;margin:1rem 0;
+  border:1px dashed var(--border);background:rgba(255,255,255,0.5);
+  letter-spacing:0.15em;
+}
+.boot-status.ok{color:var(--ok);border-color:var(--ok);border-style:solid;}
+.boot-status.err{color:var(--err);border-color:var(--err);}
+
+.presets-lbl{
+  font-family:var(--mono);font-size:0.62rem;color:var(--gold);
+  letter-spacing:0.25em;text-transform:uppercase;
+  margin:2rem 0 0.8rem;display:flex;align-items:center;gap:0.5rem;
+}
+.presets-lbl::before{content:'';width:12px;height:1px;background:var(--gold);}
+.presets{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+  gap:1px;background:var(--border-dim);
+  border:1px solid var(--border-dim);margin-bottom:1.5rem;
+}
+.preset{
+  background:var(--surface);padding:0.9rem 1rem;cursor:pointer;
+  transition:background 0.15s;border:none;text-align:left;font-family:inherit;
+  display:flex;flex-direction:column;gap:0.25rem;
+  position:relative;overflow:hidden;
+}
+.preset::after{
+  content:'';position:absolute;bottom:0;left:0;
+  width:0;height:1px;background:var(--gold);
+  transition:width 0.22s ease;
+}
+.preset:hover{background:var(--panel);}
+.preset:hover::after{width:100%;}
+.preset-num{font-family:var(--mono);font-size:0.58rem;color:var(--gold);letter-spacing:0.2em;}
+.preset-name{font-family:var(--mono);font-size:0.78rem;color:var(--ink);letter-spacing:0.04em;}
+.preset-desc{font-size:0.72rem;color:var(--muted);line-height:1.4;}
+
+.editor-wrap{
+  border:1px solid var(--border-dim);background:var(--surface);
+  margin-bottom:1rem;position:relative;
+}
+.editor-head{
+  padding:0.65rem 1rem;border-bottom:1px solid var(--border-dim);
+  font-family:var(--mono);font-size:0.64rem;
+  color:var(--gold);letter-spacing:0.22em;text-transform:uppercase;
+  display:flex;align-items:center;gap:1rem;
+}
+.editor-head::before{content:'▸';margin-right:0.2em;}
+.editor-head .prompt{color:var(--muted);font-size:0.58rem;letter-spacing:0.15em;}
+#editor{
+  width:100%;min-height:150px;padding:1rem;border:none;outline:none;resize:vertical;
+  font-family:var(--mono);font-size:0.88rem;line-height:1.7;
+  color:var(--ink);background:var(--surface);letter-spacing:0.02em;
+}
+.editor-actions{
+  padding:0.6rem 1rem;border-top:1px solid var(--border-dim);
+  display:flex;gap:0.6rem;align-items:center;background:var(--panel);flex-wrap:wrap;
+}
+.hint{
+  font-family:var(--mono);font-size:0.58rem;color:var(--muted);
+  letter-spacing:0.15em;margin-left:auto;
+}
+.hint kbd{
+  background:var(--surface);border:1px solid var(--border);
+  padding:0.15rem 0.4rem;font-family:var(--mono);font-size:0.58rem;color:var(--ink);
+}
+
+.result-wrap{
+  border:1px solid var(--border-dim);background:var(--surface);position:relative;
+  margin-bottom:2rem;
+}
+.result-head{
+  padding:0.65rem 1rem;border-bottom:1px solid var(--border-dim);
+  font-family:var(--mono);font-size:0.64rem;
+  color:var(--gold);letter-spacing:0.22em;text-transform:uppercase;
+  display:flex;align-items:center;gap:1rem;
+}
+.result-head::before{content:'◂';margin-right:0.2em;}
+.result-meta{color:var(--muted);font-size:0.58rem;letter-spacing:0.15em;margin-left:auto;}
+.result-body{padding:0;max-height:520px;overflow:auto;font-family:var(--mono);font-size:0.78rem;}
+.result-empty{padding:2rem;text-align:center;color:var(--muted);font-family:var(--mono);font-size:0.72rem;letter-spacing:0.15em;}
+.result-error{padding:1rem;color:var(--err);font-family:var(--mono);font-size:0.75rem;line-height:1.6;border-left:3px solid var(--err);background:rgba(160,52,52,0.05);}
+table.results{width:100%;border-collapse:collapse;}
+table.results th{
+  position:sticky;top:0;background:var(--panel);color:var(--gold);
+  font-family:var(--mono);font-size:0.65rem;letter-spacing:0.18em;text-transform:uppercase;font-weight:400;
+  padding:0.7rem 0.9rem;text-align:left;border-bottom:1px solid var(--border);white-space:nowrap;
+}
+table.results td{padding:0.55rem 0.9rem;border-bottom:1px solid var(--border-dim);color:var(--ink-mid);vertical-align:top;}
+table.results tr:hover td{background:var(--panel);}
+table.results td.num{text-align:right;font-variant-numeric:tabular-nums;color:var(--gold);}
+table.results td.null{color:var(--muted);font-style:italic;}
+</style>
+</head>
+<body>
+
+<!-- ── NAV (matches existing pages) ────────────────────────── -->
+<nav class="top">
+  <div class="nav-id"><span class="lbl">ID:</span>CSH-AUDIO-01</div>
+  <ul class="nav-links">
+    <li><a href="/index.html">Library</a></li>
+    <li><a href="/src/programming.html" class="current">Programming</a></li>
+    <li><a href="/src/art.html">Artwork</a></li>
+    <li><a href="/src/blog.html">Journal</a></li>
+    <li><a href="/src/about.html">Contact</a></li>
+  </ul>
+  <div class="nav-ver">v2.0 // 2025</div>
+</nav>
+
+<!-- ── PAGE HEAD ───────────────────────────────────────────── -->
+<header class="page-head">
+  <div class="container page-head-inner">
+    <div class="page-eyebrow">Sector 06 // Audio Archive Terminal</div>
+    <h1 class="page-title"><span class="accent">/</span> SQL Terminal</h1>
+    <div class="page-sub">Query the music library live · sqlite / wasm</div>
+    <div style="margin-top:1rem;font-family:var(--mono);font-size:0.68rem;letter-spacing:0.15em;">
+      <a href="/src/programming.html" style="color:var(--gold);text-decoration:none;">◂ Back to programming</a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="term-container" style="padding-top:2rem;">
+
+    <!-- STATS -->
+    <div class="stat-bar" id="statBar">
+      <div class="stat">DB: <b id="statDb">loading...</b></div>
+      <div class="stat">TRACKS: <b id="statTracks">—</b></div>
+      <div class="stat">ARTISTS: <b id="statArtists">—</b></div>
+      <div class="stat">GENRES: <b id="statGenres">—</b></div>
+    </div>
+
+    <!-- BOOT STATUS -->
+    <div class="boot-status" id="bootStatus">MOUNTING WASM · sql.js loading...</div>
+
+    <!-- PRESETS -->
+    <div class="presets-lbl">Preset Queries</div>
+    <div class="presets" id="presets"></div>
+
+    <!-- EDITOR -->
+    <div class="editor-wrap">
+      <div class="editor-head">Query <span class="prompt">// sql &gt;</span></div>
+      <textarea id="editor" spellcheck="false" placeholder="Type your SQL here or select a preset above..."></textarea>
+      <div class="editor-actions">
+        <button class="btn primary" id="runBtn" disabled><span>Run Query</span></button>
+        <button class="btn" id="clearBtn"><span>Clear</span></button>
+        <div class="hint">Press <kbd>Ctrl</kbd>+<kbd>Enter</kbd> to run</div>
+      </div>
+    </div>
+
+    <!-- RESULTS -->
+    <div class="result-wrap">
+      <div class="result-head">Result <span class="result-meta" id="resultMeta">no query executed</span></div>
+      <div class="result-body" id="resultBody">
+        <div class="result-empty">// Awaiting query. Select a preset or write your own.</div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<!-- ── FOOTER (matches other pages, current = programming) ─── -->
+<footer class="main">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="footer-quote">「Every step forward is one towards progress.」 #3A</div>
+      <div class="footer-note">C. SAI HALLIE // AUDIO DESIGNER</div>
+    </div>
+    <div>
+      <div class="footer-nav-lbl">Navigate</div>
+      <ul class="footer-nav">
+        <li><a href="/index.html"><span>Library</span></a></li>
+        <li><a href="/src/art.html"><span>Artwork</span></a></li>
+        <li><a href="/src/blog.html"><span>Journal</span></a></li>
+        <li><a href="/src/about.html"><span>Contact</span></a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div>UNIT <span class="lbl">CSH-AUDIO-01</span> // <span class="lbl">2025</span></div>
+    <div>SAIHALLIE.COM</div>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.10.3/sql-wasm.js"></script>
+<script>
+const PRESETS = [
+  { name: "Genre Distribution", desc: "Aggregation across many-to-many join",
+    sql: `-- Q1: How does my library distribute across genres?
+SELECT vtg.genre, COUNT(DISTINCT ul.track_id) AS liked_tracks
+FROM v_track_genres vtg
+JOIN user_likes ul ON ul.track_id = vtg.track_id
+GROUP BY vtg.genre
+ORDER BY liked_tracks DESC
+LIMIT 12;` },
+  { name: "Year Breakdown", desc: "Grouped time series, denormalized col",
+    sql: `-- Q2: Distribution of my likes by release year
+SELECT al.release_year AS year, COUNT(*) AS tracks
+FROM user_likes ul
+JOIN tracks t  ON t.track_id  = ul.track_id
+JOIN albums al ON al.album_id = t.album_id
+WHERE al.release_year IS NOT NULL
+GROUP BY al.release_year
+ORDER BY al.release_year;` },
+  { name: "Top Artists", desc: "Join across bridge, primary-only filter",
+    sql: `-- Q3: Which artists dominate my library?
+SELECT a.name AS artist, COUNT(*) AS liked_tracks, a.popularity
+FROM user_likes ul
+JOIN track_artists ta ON ta.track_id = ul.track_id
+JOIN artists a        ON a.artist_id = ta.artist_id
+WHERE ta.artist_order = 0
+GROUP BY a.artist_id
+ORDER BY liked_tracks DESC
+LIMIT 15;` },
+  { name: "BPM Buckets", desc: "CASE expression, continuous bucketing",
+    sql: `-- Q4: What tempo ranges do I gravitate toward?
+SELECT
+  CASE
+    WHEN af.tempo < 70  THEN 'A: <70 BPM (slow)'
+    WHEN af.tempo < 90  THEN 'B: 70-89 BPM (lo-fi)'
+    WHEN af.tempo < 110 THEN 'C: 90-109 BPM (hip-hop)'
+    WHEN af.tempo < 130 THEN 'D: 110-129 BPM (mid-tempo)'
+    WHEN af.tempo < 150 THEN 'E: 130-149 BPM (dance)'
+    ELSE                     'F: 150+ BPM (fast)'
+  END AS tempo_range,
+  COUNT(*) AS tracks
+FROM audio_features af
+JOIN user_likes ul ON ul.track_id = af.track_id
+GROUP BY tempo_range
+ORDER BY tempo_range;` },
+  { name: "Sound Design Candidates", desc: "Parameterized filter, distance sort",
+    sql: `-- Q5: Find tracks near 75 BPM in a minor key
+SELECT vtf.track_name, vtf.primary_artist, vtf.release_year,
+       ROUND(vtf.tempo, 1) AS bpm,
+       CASE vtf.key WHEN 0 THEN 'C' WHEN 1 THEN 'C#' WHEN 2 THEN 'D'
+                    WHEN 3 THEN 'D#' WHEN 4 THEN 'E' WHEN 5 THEN 'F'
+                    WHEN 6 THEN 'F#' WHEN 7 THEN 'G' WHEN 8 THEN 'G#'
+                    WHEN 9 THEN 'A' WHEN 10 THEN 'A#' WHEN 11 THEN 'B' END AS key
+FROM v_tracks_full vtf
+JOIN user_likes ul ON ul.track_id = vtf.track_id
+WHERE vtf.tempo BETWEEN 70 AND 80 AND vtf.mode = 0
+ORDER BY ABS(vtf.tempo - 75)
+LIMIT 10;` },
+  { name: "Collaboration Graph", desc: "Self-join to find artist pairs",
+    sql: `-- Q6: Which artists appear together on tracks I like?
+SELECT a1.name AS artist_a, a2.name AS artist_b, COUNT(*) AS shared_tracks
+FROM track_artists ta1
+JOIN track_artists ta2 ON ta1.track_id = ta2.track_id AND ta1.artist_id < ta2.artist_id
+JOIN artists a1 ON a1.artist_id = ta1.artist_id
+JOIN artists a2 ON a2.artist_id = ta2.artist_id
+JOIN user_likes ul ON ul.track_id = ta1.track_id
+GROUP BY a1.artist_id, a2.artist_id
+ORDER BY shared_tracks DESC
+LIMIT 10;` },
+  { name: "Mood vs Energy", desc: "Validate tags against audio features",
+    sql: `-- Q7: Do my mood tags actually match measured energy?
+SELECT mt.mood, COUNT(*) AS tracks,
+       ROUND(AVG(af.energy), 3)  AS avg_energy,
+       ROUND(AVG(af.valence), 3) AS avg_valence,
+       ROUND(AVG(af.tempo), 1)   AS avg_bpm
+FROM mood_tags mt
+JOIN audio_features af ON af.track_id = mt.track_id
+GROUP BY mt.mood
+ORDER BY avg_energy DESC;` },
+  { name: "Self-Portrait", desc: "Multi-subquery summary row",
+    sql: `-- Q8: One row that summarizes the whole library
+WITH top_genres AS (
+  SELECT GROUP_CONCAT(genre, ', ') AS top3 FROM (
+    SELECT vtg.genre FROM v_track_genres vtg
+    JOIN user_likes ul ON ul.track_id = vtg.track_id
+    GROUP BY vtg.genre ORDER BY COUNT(*) DESC LIMIT 3
+  )
+)
+SELECT
+  (SELECT COUNT(*) FROM user_likes) AS total_likes,
+  (SELECT ROUND(AVG(tempo), 1) FROM audio_features af
+     JOIN user_likes ul ON ul.track_id = af.track_id) AS mean_tempo,
+  (SELECT ROUND(AVG(energy), 2) FROM audio_features af
+     JOIN user_likes ul ON ul.track_id = af.track_id) AS mean_energy,
+  (SELECT top3 FROM top_genres) AS top_three_genres;` },
+];
+
+let db = null;
+const boot = document.getElementById('bootStatus');
+const editor = document.getElementById('editor');
+const runBtn = document.getElementById('runBtn');
+const clearBtn = document.getElementById('clearBtn');
+const resultBody = document.getElementById('resultBody');
+const resultMeta = document.getElementById('resultMeta');
+
+function renderPresets(){
+  const container = document.getElementById('presets');
+  PRESETS.forEach((p, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'preset';
+    btn.innerHTML = `
+      <span class="preset-num">// ${String(i+1).padStart(2, '0')}</span>
+      <span class="preset-name">${p.name}</span>
+      <span class="preset-desc">${p.desc}</span>`;
+    btn.addEventListener('click', () => {
+      editor.value = p.sql;
+      editor.focus();
+      if (db) runQuery();
+    });
+    container.appendChild(btn);
+  });
+}
+
+async function initDb(){
+  try {
+    const SQL = await initSqlJs({
+      locateFile: f => `https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.10.3/${f}`
+    });
+    boot.textContent = 'FETCHING music_library.db...';
+    const resp = await fetch('music_library.db');
+    if(!resp.ok) throw new Error('DB file not found (' + resp.status + ')');
+    const buf = await resp.arrayBuffer();
+    db = new SQL.Database(new Uint8Array(buf));
+    boot.textContent = 'SYSTEM READY · database mounted, ' + Math.round(buf.byteLength/1024) + 'KB';
+    boot.classList.add('ok');
+    runBtn.disabled = false;
+    populateStats();
+  } catch(e) {
+    boot.textContent = 'ERROR: ' + e.message;
+    boot.classList.add('err');
+    console.error(e);
+  }
+}
+
+function populateStats(){
+  try {
+    const r = db.exec(`SELECT
+      (SELECT COUNT(*) FROM user_likes) AS tracks,
+      (SELECT COUNT(*) FROM artists)    AS artists,
+      (SELECT COUNT(*) FROM genres)     AS genres`);
+    if(r.length){
+      const [t, a, g] = r[0].values[0];
+      document.getElementById('statDb').textContent = 'music_library.db';
+      document.getElementById('statTracks').textContent = t;
+      document.getElementById('statArtists').textContent = a;
+      document.getElementById('statGenres').textContent = g;
+    }
+  } catch(e) { console.error(e); }
+}
+
+function runQuery(){
+  const sql = editor.value.trim();
+  if(!sql || !db) return;
+  const start = performance.now();
+  try {
+    const results = db.exec(sql);
+    const elapsed = (performance.now() - start).toFixed(1);
+    if(!results.length){
+      resultBody.innerHTML = '<div class="result-empty">// Query returned no rows.</div>';
+      resultMeta.textContent = `0 rows · ${elapsed}ms`;
+      return;
+    }
+    const first = results[0];
+    const cols = first.columns;
+    const vals = first.values;
+    let html = '<table class="results"><thead><tr>';
+    cols.forEach(c => html += `<th>${escapeHtml(c)}</th>`);
+    html += '</tr></thead><tbody>';
+    vals.forEach(row => {
+      html += '<tr>';
+      row.forEach(cell => {
+        if(cell === null) html += '<td class="null">NULL</td>';
+        else if(typeof cell === 'number') html += `<td class="num">${cell}</td>`;
+        else html += `<td>${escapeHtml(String(cell))}</td>`;
+      });
+      html += '</tr>';
+    });
+    html += '</tbody></table>';
+    resultBody.innerHTML = html;
+    resultMeta.textContent = `${vals.length} row${vals.length===1?'':'s'} · ${cols.length} col${cols.length===1?'':'s'} · ${elapsed}ms`;
+  } catch(e) {
+    resultBody.innerHTML = `<div class="result-error">// ERROR<br>${escapeHtml(e.message)}</div>`;
+    resultMeta.textContent = 'query failed';
+  }
+}
+
+function escapeHtml(s){
+  return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+runBtn.addEventListener('click', runQuery);
+clearBtn.addEventListener('click', () => {
+  editor.value = '';
+  resultBody.innerHTML = '<div class="result-empty">// Awaiting query.</div>';
+  resultMeta.textContent = 'no query executed';
+});
+editor.addEventListener('keydown', e => {
+  if((e.ctrlKey || e.metaKey) && e.key === 'Enter'){
+    e.preventDefault();
+    runQuery();
+  }
+});
+
+renderPresets();
+initDb();
+</script>
+</body>
+</html>

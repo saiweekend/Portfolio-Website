@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+  <rect width="400" height="400" fill="#f8f6f0"/>
+  <!-- corner brackets -->
+  <path d="M20 20 L20 40 M20 20 L40 20" stroke="#8a6c3a" stroke-width="1.5" fill="none"/>
+  <path d="M380 20 L380 40 M380 20 L360 20" stroke="#8a6c3a" stroke-width="1.5" fill="none"/>
+  <path d="M20 380 L20 360 M20 380 L40 380" stroke="#8a6c3a" stroke-width="1.5" fill="none"/>
+  <path d="M380 380 L380 360 M380 380 L360 380" stroke="#8a6c3a" stroke-width="1.5" fill="none"/>
+
+  <!-- Terminal window frame -->
+  <rect x="60" y="80" width="280" height="240" fill="#ffffff" stroke="#d4c9b0" stroke-width="1"/>
+
+  <!-- Terminal header bar -->
+  <rect x="60" y="80" width="280" height="24" fill="#f2ede4" stroke="#d4c9b0" stroke-width="1"/>
+  <text x="72" y="97" font-family="monospace" font-size="9" fill="#8a6c3a" letter-spacing="2">SQL &gt; music_library.db</text>
+  <text x="325" y="97" font-family="monospace" font-size="9" fill="#8a6c3a" text-anchor="end">◇</text>
+
+  <!-- Query lines -->
+  <text x="72" y="130" font-family="monospace" font-size="10" fill="#8a6c3a" font-weight="bold">SELECT</text>
+  <text x="120" y="130" font-family="monospace" font-size="10" fill="#4a3f2f">track_name, tempo, key</text>
+  <text x="72" y="146" font-family="monospace" font-size="10" fill="#8a6c3a" font-weight="bold">FROM</text>
+  <text x="108" y="146" font-family="monospace" font-size="10" fill="#4a3f2f">v_tracks_full</text>
+  <text x="72" y="162" font-family="monospace" font-size="10" fill="#8a6c3a" font-weight="bold">WHERE</text>
+  <text x="115" y="162" font-family="monospace" font-size="10" fill="#4a3f2f">tempo BETWEEN 70 AND 80</text>
+  <text x="72" y="178" font-family="monospace" font-size="10" fill="#8a6c3a" font-weight="bold">ORDER BY</text>
+  <text x="132" y="178" font-family="monospace" font-size="10" fill="#4a3f2f">ABS(tempo - 75);</text>
+
+  <!-- Result divider -->
+  <line x1="72" y1="200" x2="328" y2="200" stroke="#e8e0d0" stroke-width="1" stroke-dasharray="2 2"/>
+
+  <!-- Result rows -->
+  <text x="72" y="220" font-family="monospace" font-size="8" fill="#8a7f6a" letter-spacing="1">// RESULT · 10 ROWS</text>
+  <rect x="72" y="228" width="256" height="1" fill="#e8e0d0"/>
+
+  <text x="72" y="244" font-family="monospace" font-size="9" fill="#4a3f2f">Wire Circuit</text>
+  <text x="240" y="244" font-family="monospace" font-size="9" fill="#8a6c3a">71.0 · A min</text>
+  <text x="72" y="260" font-family="monospace" font-size="9" fill="#4a3f2f">West Hymn</text>
+  <text x="240" y="260" font-family="monospace" font-size="9" fill="#8a6c3a">72.3 · D# min</text>
+  <text x="72" y="276" font-family="monospace" font-size="9" fill="#4a3f2f">First Threshold</text>
+  <text x="240" y="276" font-family="monospace" font-size="9" fill="#8a6c3a">73.0 · C# min</text>
+  <text x="72" y="292" font-family="monospace" font-size="9" fill="#4a3f2f">Water Reverie</text>
+  <text x="240" y="292" font-family="monospace" font-size="9" fill="#8a6c3a">74.6 · F min</text>
+  <text x="72" y="308" font-family="monospace" font-size="9" fill="#4a3f2f">Quiet Machine</text>
+  <text x="240" y="308" font-family="monospace" font-size="9" fill="#8a6c3a">75.2 · B min</text>
+
+  <!-- Blinking cursor at bottom -->
+  <rect x="72" y="330" width="6" height="10" fill="#8a6c3a"/>
+
+  <!-- footer label -->
+  <text x="200" y="365" font-family="monospace" font-size="8" fill="#8a7f6a" text-anchor="middle" letter-spacing="3">MUSIC_LIBRARY // SQL</text>
+</svg>
