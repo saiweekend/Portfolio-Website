@@ -3,6 +3,18 @@
    Shared stylesheet · all pages
    ══════════════════════════════════════════════════════════════ */
 
+/* ── CUSTOM FONT ──────────────────────────────────────────────
+   FOT-Rodin Pro DB — the typeface used in NieR: Automata's UI.
+   font-display:swap lets fallback render immediately during the
+   ~2.7MB font download, so pages never blank out. */
+@font-face {
+  font-family: 'fot-rodin-pron';
+  src: url('../fonts/FOT-Rodin%20Pro%20DB.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 
 :root{
@@ -223,10 +235,11 @@ main{min-height:calc(100vh - var(--nav-h) - 200px);}
 #embedContent iframe{width:100%;max-width:100%;border:none;display:block;margin:0 auto 0.8rem;}
 #embedContent img{
   display:block;
-  max-width:min(100%,300px);
+  max-width:min(100%,550px);
+  width:100%;
   height:auto;
-  margin:1.2rem auto 1.5rem;
-  padding:8px;
+  margin:1.5rem auto 2rem;
+  padding:12px;
   background:var(--surface);
   border:1px solid var(--border-dim);
   transition:border-color 0.2s,transform 0.3s;
