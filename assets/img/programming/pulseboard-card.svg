@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+  <rect width="400" height="400" fill="#f8f6f0"/>
+  <!-- corner brackets -->
+  <path d="M20 20 L20 40 M20 20 L40 20" stroke="#8a6c3a" stroke-width="1.5" fill="none"/>
+  <path d="M380 20 L380 40 M380 20 L360 20" stroke="#8a6c3a" stroke-width="1.5" fill="none"/>
+  <path d="M20 380 L20 360 M20 380 L40 380" stroke="#8a6c3a" stroke-width="1.5" fill="none"/>
+  <path d="M380 380 L380 360 M380 380 L360 380" stroke="#8a6c3a" stroke-width="1.5" fill="none"/>
+
+  <!-- Terminal window frame -->
+  <rect x="60" y="70" width="280" height="260" fill="#ffffff" stroke="#d4c9b0" stroke-width="1"/>
+
+  <!-- Terminal header bar -->
+  <rect x="60" y="70" width="280" height="24" fill="#f2ede4" stroke="#d4c9b0" stroke-width="1"/>
+  <text x="72" y="87" font-family="monospace" font-size="9" fill="#8a6c3a" letter-spacing="2">LIVE // ws:/pulse/feed</text>
+  <text x="325" y="87" font-family="monospace" font-size="9" fill="#8a6c3a" text-anchor="end">&#9679;</text>
+
+  <!-- metric row -->
+  <text x="72" y="112" font-family="monospace" font-size="8" fill="#8a7f6a" letter-spacing="1">TXNS/MIN</text>
+  <text x="72" y="126" font-family="monospace" font-size="12" fill="#4a3f2f" font-weight="bold">312</text>
+  <text x="168" y="112" font-family="monospace" font-size="8" fill="#8a7f6a" letter-spacing="1">P95 LATENCY</text>
+  <text x="168" y="126" font-family="monospace" font-size="12" fill="#4a3f2f" font-weight="bold">184ms</text>
+  <text x="264" y="112" font-family="monospace" font-size="8" fill="#8a7f6a" letter-spacing="1">FLAGGED</text>
+  <text x="264" y="126" font-family="monospace" font-size="12" fill="#8a6c3a" font-weight="bold">2</text>
+
+  <line x1="72" y1="138" x2="328" y2="138" stroke="#e8e0d0" stroke-width="1" stroke-dasharray="2 2"/>
+
+  <!-- simple sparkline -->
+  <polyline points="72,190 100,178 128,182 156,160 184,168 212,142 240,150 268,120 296,132 324,110"
+            fill="none" stroke="#8a6c3a" stroke-width="1.5"/>
+  <circle cx="324" cy="110" r="3" fill="#8a6c3a"/>
+  <text x="72" y="206" font-family="monospace" font-size="8" fill="#8a7f6a" letter-spacing="1">VOLUME · LAST 5 MIN</text>
+
+  <line x1="72" y1="216" x2="328" y2="216" stroke="#e8e0d0" stroke-width="1" stroke-dasharray="2 2"/>
+
+  <!-- row list mimicking the virtualized table -->
+  <text x="72" y="234" font-family="monospace" font-size="8" fill="#8a7f6a" letter-spacing="1">DOM ROWS RENDERED</text>
+  <text x="328" y="234" font-family="monospace" font-size="9" fill="#4a3f2f" text-anchor="end">14 / 4,820</text>
+
+  <text x="72" y="252" font-family="monospace" font-size="9" fill="#4a3f2f">usr_1042</text>
+  <text x="200" y="252" font-family="monospace" font-size="9" fill="#8a7f6a">CloudHost Inc</text>
+  <text x="328" y="252" font-family="monospace" font-size="9" fill="#4a3f2f" text-anchor="end">&#165;4,200</text>
+
+  <text x="72" y="268" font-family="monospace" font-size="9" fill="#4a3f2f">usr_1017</text>
+  <text x="200" y="268" font-family="monospace" font-size="9" fill="#8a7f6a">Ramen Ichiban</text>
+  <text x="328" y="268" font-family="monospace" font-size="9" fill="#4a3f2f" text-anchor="end">&#165;980</text>
+
+  <rect x="70" y="276" width="260" height="16" fill="#f2ede4"/>
+  <text x="72" y="288" font-family="monospace" font-size="9" fill="#8a6c3a" font-weight="bold">usr_1033 — flagged, risk 92</text>
+
+  <!-- Blinking cursor -->
+  <rect x="72" y="304" width="6" height="10" fill="#8a6c3a"/>
+
+  <text x="200" y="355" font-family="monospace" font-size="8" fill="#8a7f6a" text-anchor="middle" letter-spacing="3">PULSEBOARD // LIVE MONITORING</text>
+</svg>

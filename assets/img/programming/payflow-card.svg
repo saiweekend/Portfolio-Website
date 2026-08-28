@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+  <rect width="400" height="400" fill="#f8f6f0"/>
+  <!-- corner brackets -->
+  <path d="M20 20 L20 40 M20 20 L40 20" stroke="#8a6c3a" stroke-width="1.5" fill="none"/>
+  <path d="M380 20 L380 40 M380 20 L360 20" stroke="#8a6c3a" stroke-width="1.5" fill="none"/>
+  <path d="M20 380 L20 360 M20 380 L40 380" stroke="#8a6c3a" stroke-width="1.5" fill="none"/>
+  <path d="M380 380 L380 360 M380 380 L360 380" stroke="#8a6c3a" stroke-width="1.5" fill="none"/>
+
+  <!-- Terminal window frame -->
+  <rect x="60" y="70" width="280" height="260" fill="#ffffff" stroke="#d4c9b0" stroke-width="1"/>
+
+  <!-- Terminal header bar -->
+  <rect x="60" y="70" width="280" height="24" fill="#f2ede4" stroke="#d4c9b0" stroke-width="1"/>
+  <text x="72" y="87" font-family="monospace" font-size="9" fill="#8a6c3a" letter-spacing="2">POST /transactions/transfer</text>
+
+  <!-- Request header lines -->
+  <text x="72" y="118" font-family="monospace" font-size="9" fill="#8a7f6a" letter-spacing="1">Authorization: Bearer •••••</text>
+  <text x="72" y="132" font-family="monospace" font-size="9" fill="#8a6c3a" font-weight="bold">Idempotency-Key:</text>
+  <text x="72" y="146" font-family="monospace" font-size="9" fill="#4a3f2f">  a3f9-21c4-88e0-9b1d</text>
+
+  <line x1="72" y1="160" x2="328" y2="160" stroke="#e8e0d0" stroke-width="1" stroke-dasharray="2 2"/>
+
+  <text x="72" y="180" font-family="monospace" font-size="9" fill="#8a7f6a" letter-spacing="1">// attempt 1 — request times out</text>
+  <text x="72" y="196" font-family="monospace" font-size="9" fill="#4a3f2f">recipient  usr_2</text>
+  <text x="72" y="210" font-family="monospace" font-size="9" fill="#4a3f2f">amount     &#165;3,000</text>
+
+  <text x="72" y="232" font-family="monospace" font-size="9" fill="#8a7f6a" letter-spacing="1">// attempt 2 — same key, retried</text>
+  <rect x="70" y="240" width="260" height="20" fill="#f2ede4"/>
+  <text x="72" y="254" font-family="monospace" font-size="9" fill="#8a6c3a" font-weight="bold">200 replayed — balance unchanged</text>
+
+  <line x1="72" y1="272" x2="328" y2="272" stroke="#e8e0d0" stroke-width="1" stroke-dasharray="2 2"/>
+
+  <text x="72" y="292" font-family="monospace" font-size="8" fill="#8a7f6a" letter-spacing="1">BALANCE</text>
+  <text x="328" y="292" font-family="monospace" font-size="10" fill="#4a3f2f" text-anchor="end">&#165;47,000</text>
+  <text x="72" y="308" font-family="monospace" font-size="8" fill="#8a7f6a" letter-spacing="1">CHARGED ONCE</text>
+  <text x="328" y="308" font-family="monospace" font-size="10" fill="#8a6c3a" text-anchor="end">&#10003; verified</text>
+
+  <!-- Blinking cursor -->
+  <rect x="72" y="318" width="6" height="10" fill="#8a6c3a"/>
+
+  <text x="200" y="355" font-family="monospace" font-size="8" fill="#8a7f6a" text-anchor="middle" letter-spacing="3">PAYFLOW // IDEMPOTENT TRANSFER</text>
+</svg>
