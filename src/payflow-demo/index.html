@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>PayFlow</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
+  rel="stylesheet"
+/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.4.31/vue.global.prod.min.js"></script>
+
+<style>
+  /* ---------------------------------------------------------------------
+     Tokens
+     Palette: deep teal (trust / ledger) + warm coral (action), on a warm
+     paper neutral rather than pure white/grey — chosen so the app doesn't
+     read as a generic blue fintech clone.
+     Type: Manrope for headings/UI chrome, IBM Plex Sans for body copy,
+     IBM Plex Mono for anything tabular — amounts, ids, log output — the
+     monospace nod to a ledger/receipt reading experience.
+  --------------------------------------------------------------------- */
+  :root {
+    --bg: #f6f4ef;
+    --surface: #ffffff;
+    --surface-2: #efebe2;
+    --text: #1b1a17;
+    --text-muted: #6b6558;
+    --primary: #0f5c4e;
+    --primary-strong: #0b4238;
+    --on-primary: #f6f4ef;
+    --accent: #d9542e;
+    --accent-strong: #b8431f;
+    --success: #1e8e5a;
+    --success-bg: #e8f5ee;
+    --danger: #c1442b;
+    --danger-bg: #fbe9e5;
+    --border: #e4dfd3;
+    --shadow: 0 20px 45px -25px rgba(27, 26, 23, 0.35);
+    --radius-lg: 22px;
+    --radius-md: 14px;
+    --radius-sm: 8px;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme='light']) {
+      --bg: #0d1512;
+      --surface: #142520;
+      --surface-2: #1b322b;
+      --text: #f3f1ea;
+      --text-muted: #9fb0aa;
+      --primary: #57d6a8;
+      --primary-strong: #7fe2bc;
+      --on-primary: #06231c;
+      --accent: #ff8a65;
+      --accent-strong: #ffa889;
+      --success: #6bd39c;
+      --success-bg: #163a2b;
+      --danger: #ff8a76;
+      --danger-bg: #3a1c17;
+      --border: #23423a;
+      --shadow: 0 20px 45px -20px rgba(0, 0, 0, 0.6);
+    }
+  }
+
+  :root[data-theme='dark'] {
+    --bg: #0d1512;
+    --surface: #142520;
+    --surface-2: #1b322b;
+    --text: #f3f1ea;
+    --text-muted: #9fb0aa;
+    --primary: #57d6a8;
+    --primary-strong: #7fe2bc;
+    --on-primary: #06231c;
+    --accent: #ff8a65;
+    --accent-strong: #ffa889;
+    --success: #6bd39c;
+    --success-bg: #163a2b;
+    --danger: #ff8a76;
+    --danger-bg: #3a1c17;
+    --border: #23423a;
+    --shadow: 0 20px 45px -20px rgba(0, 0, 0, 0.6);
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'IBM Plex Sans', ui-sans-serif, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .mono {
+    font-family: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', monospace;
+    font-variant-numeric: tabular-nums;
+  }
+
+  h1,
+  h2,
+  h3,
+  .heading {
+    font-family: 'Manrope', ui-sans-serif, system-ui, sans-serif;
+    text-wrap: balance;
+    letter-spacing: -0.01em;
+  }
+
+  .page {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  .masthead {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 8px;
+  }
+
+  .masthead h1 {
+    font-size: clamp(1.6rem, 2.4vw, 2rem);
+    font-weight: 800;
+    margin: 0;
+    color: var(--primary-strong);
+  }
+
+  .masthead .tagline {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    margin: 4px 0 0;
+  }
+
+  .badge-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .badge {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.02em;
+    padding: 5px 10px;
+    border-radius: 999px;
+    background: var(--surface-2);
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+  }
+
+  .layout {
+    margin-top: 36px;
+    display: grid;
+    grid-template-columns: minmax(320px, 400px) 1fr;
+    gap: 32px;
+    align-items: start;
+  }
+
+  @media (max-width: 860px) {
+    .layout {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* ---- device frame ---- */
+  .device {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    position: sticky;
+    top: 24px;
+  }
+
+  .device-bar {
+    display: flex;
+    gap: 8px;
+    padding: 6px 12px;
+    background: var(--surface-2);
+    align-items: center;
+  }
+
+  .tabs {
+    display: flex;
+    gap: 2px;
+    padding: 8px 10px 0;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .tab {
+    appearance: none;
+    border: none;
+    background: none;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 600;
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    padding: 8px 10px;
+    border-radius: 8px 8px 0 0;
+    cursor: pointer;
+  }
+
+  .tab.active {
+    color: var(--primary-strong);
+    background: var(--bg);
+  }
+
+  .screen {
+    min-height: 560px;
+    padding: 22px 20px 26px;
+    background: var(--bg);
+  }
+
+  .field-label {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+    display: block;
+  }
+
+  input,
+  .demo-input {
+    width: 100%;
+    font: inherit;
+    font-family: 'IBM Plex Sans', sans-serif;
+    padding: 11px 12px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+  }
+
+  input:focus,
+  button:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 1px;
+  }
+
+  .btn {
+    appearance: none;
+    border: none;
+    border-radius: var(--radius-sm);
+    padding: 12px 16px;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 700;
+    font-size: 0.92rem;
+    cursor: pointer;
+    width: 100%;
+  }
+
+  .btn-primary {
+    background: var(--primary);
+    color: var(--on-primary);
+  }
+  .btn-primary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .btn-accent {
+    background: var(--accent);
+    color: #fff8f5;
+  }
+
+  .btn-ghost {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text);
+  }
+
+  .balance-card {
+    background: linear-gradient(135deg, var(--primary), var(--primary-strong));
+    color: var(--on-primary);
+    border-radius: var(--radius-md);
+    padding: 20px;
+    margin-bottom: 18px;
+  }
+
+  .balance-card .label {
+    font-size: 0.78rem;
+    opacity: 0.85;
+  }
+
+  .balance-card .amount {
+    font-size: 1.9rem;
+    font-weight: 700;
+    margin-top: 6px;
+  }
+
+  .quick-actions {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .quick-actions button {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 12px 6px;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 600;
+    font-size: 0.78rem;
+    color: var(--text);
+    cursor: pointer;
+  }
+
+  .tx-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .tx-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.85rem;
+    flex-shrink: 0;
+  }
+
+  .tx-icon.out {
+    background: var(--danger-bg);
+    color: var(--danger);
+  }
+  .tx-icon.in {
+    background: var(--success-bg);
+    color: var(--success);
+  }
+
+  .tx-meta {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .tx-meta .who {
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+  .tx-meta .memo {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .tx-amount {
+    font-weight: 700;
+    font-size: 0.85rem;
+    flex-shrink: 0;
+  }
+  .tx-amount.out {
+    color: var(--danger);
+  }
+  .tx-amount.in {
+    color: var(--success);
+  }
+
+  .metric-strip {
+    display: flex;
+    justify-content: space-between;
+    background: var(--surface-2);
+    border-radius: var(--radius-sm);
+    padding: 10px 12px;
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+  }
+  .metric-strip strong {
+    color: var(--text);
+    font-family: 'IBM Plex Mono', monospace;
+  }
+
+  .virtual-viewport {
+    height: 360px;
+    overflow-y: auto;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--surface);
+  }
+
+  .modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(13, 21, 18, 0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    z-index: 30;
+  }
+
+  .modal {
+    background: var(--surface);
+    border-radius: var(--radius-md);
+    padding: 22px;
+    width: 100%;
+    max-width: 340px;
+    box-shadow: var(--shadow);
+  }
+
+  .log-panel {
+    margin-top: 14px;
+    background: var(--surface-2);
+    border-radius: var(--radius-sm);
+    padding: 10px 12px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.68rem;
+    line-height: 1.6;
+    color: var(--text-muted);
+    max-height: 120px;
+    overflow-y: auto;
+  }
+  .log-panel .ok {
+    color: var(--success);
+  }
+  .log-panel .warn {
+    color: var(--accent);
+  }
+
+  .checkbox-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    margin: 12px 0;
+  }
+  .checkbox-row input {
+    width: auto;
+    margin-top: 2px;
+  }
+
+  .split-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* ---- explainer rail ---- */
+  .rail {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .rail-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 18px 20px;
+  }
+
+  .rail-card .eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--primary-strong);
+  }
+
+  .rail-card h3 {
+    margin: 6px 0 8px;
+    font-size: 1.05rem;
+  }
+
+  .rail-card p {
+    margin: 0 0 8px;
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    line-height: 1.55;
+    max-width: 62ch;
+  }
+
+  .rail-card .maps-to {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 10px;
+  }
+
+  .chip {
+    font-size: 0.68rem;
+    font-family: 'IBM Plex Mono', monospace;
+    background: var(--success-bg);
+    color: var(--success);
+    padding: 3px 8px;
+    border-radius: 999px;
+  }
+
+  footer.note {
+    margin-top: 30px;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    border-top: 1px solid var(--border);
+    padding-top: 16px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      animation: none !important;
+      transition: none !important;
+    }
+  }
+</style>
+</head>
+<body>
+<div id="app"></div>
+
+<script>
+  const { createApp, reactive, computed, ref, onMounted, nextTick } = Vue;
+
+  const yen = new Intl.NumberFormat('ja-JP', {
+    style: 'currency',
+    currency: 'JPY',
+    maximumFractionDigits: 0,
+  });
+
+  function seedTransactions(n) {
+    const memos = ['Lunch', 'Rent split', 'Concert tickets', 'Coffee', 'Groceries', '', 'Taxi', 'Gift'];
+    const list = [];
+    for (let i = 0; i < n; i++) {
+      const out = Math.random() > 0.5;
+      list.push({
+        id: 'tx_' + i,
+        out,
+        who: out ? 'usr_' + (2 + (i % 6)) : 'usr_' + (2 + (i % 6)),
+        amount: 200 + Math.floor(Math.random() * 9800),
+        memo: memos[i % memos.length],
+        date: new Date(Date.now() - i * 3.6e6),
+      });
+    }
+    return list;
+  }
+
+  const railContent = {
+    login: {
+      eyebrow: 'Screen · Sign in',
+      title: 'Tokens never touch localStorage',
+      body: "The real app keeps the access token in a Pinia store's in-memory state only — never localStorage or sessionStorage. It's a deliberate trade: refreshing the page logs you out, in exchange for closing off the entire 'XSS reads localStorage, steals the token' attack path. A production build pairs this with an httpOnly refresh cookie to restore sessions silently.",
+      tags: ['secure frontend', 'JWT', 'Vue + Pinia'],
+    },
+    dashboard: {
+      eyebrow: 'Screen · Dashboard',
+      title: 'Route-level code splitting',
+      body: 'Every view past login is dynamically imported (`() => import(...)`), so Vite gives each one its own chunk. The bundle a first-time visitor downloads is just enough to render the login screen — Send, History and Split Bill only load when the user actually navigates there.',
+      tags: ['performance', 'Vite', 'bundle size'],
+    },
+    send: {
+      eyebrow: 'Screen · Send money',
+      title: 'Idempotency keys prevent double-charges',
+      body: 'Tick "simulate a flaky network" below, then send. You will see the request appear to fail — but the simulated server already recorded the transfer against that Idempotency-Key. Hitting Retry reuses the same key: the balance moves once, not twice. This mirrors the real backend interceptor exactly (see backend/src/common/idempotency).',
+      tags: ['payments correctness', 'NestJS interceptor', 'retries'],
+    },
+    history: {
+      eyebrow: 'Screen · Transaction history',
+      title: 'Virtualized rendering at scale',
+      body: "5,000 transactions are loaded, but the counter below shows only the rows inside the viewport (plus a small overscan) ever exist as real DOM nodes. Scroll and watch the count — it stays flat instead of climbing toward 5,000. That's the same hand-rolled windowing technique as VirtualTransactionList.vue.",
+      tags: ['performance', 'virtualization', 'large lists'],
+    },
+    split: {
+      eyebrow: 'Screen · Split a bill',
+      title: 'Rounding that never loses a yen',
+      body: 'Splitting an integer amount N ways with `total / n` either drops fractional yen or, rounded up, collects more than the bill. This gives everyone `floor(total/n)` and hands the leftover `total % n` yen to the first few people, one each — the shares always sum exactly back to the total.',
+      tags: ['edge cases', 'integer math'],
+    },
+  };
+
+  createApp({
+    setup() {
+      const screen = ref('login');
+      const email = ref('demo@payflow.dev');
+      const password = ref('');
+      const balance = ref(50000);
+
+      const history = reactive(seedTransactions(5000).map((t) => ({ ...t })));
+
+      // ---- send money flow ----
+      const form = reactive({ recipient: '', amount: '', memo: '' });
+      const showConfirm = ref(false);
+      const simulateFlaky = ref(false);
+      const sendState = ref('idle'); // idle | sending | error | success
+      const idempotencyKey = ref(null);
+      const serverRecords = reactive({}); // simulated backend idempotency store
+      const log = reactive([]);
+
+      function pushLog(msg, cls) {
+        log.push({ msg, cls, t: new Date().toLocaleTimeString() });
+        nextTick(() => {
+          const el = document.querySelector('.log-panel');
+          if (el) el.scrollTop = el.scrollHeight;
+        });
+      }
+
+      const parsedAmount = computed(() => {
+        const n = Number(form.amount.replace(/[,\s¥]/g, ''));
+        return Number.isFinite(n) && n > 0 ? Math.floor(n) : null;
+      });
+
+      const canReview = computed(
+        () => form.recipient.trim().length > 0 && parsedAmount.value !== null && parsedAmount.value <= balance.value,
+      );
+
+      function openConfirm() {
+        idempotencyKey.value = 'idem_' + Math.random().toString(36).slice(2, 10);
+        sendState.value = 'idle';
+        log.length = 0;
+        showConfirm.value = true;
+      }
+
+      function simulatedServerCall(key, willDropResponse) {
+        // Simulates POST /transactions/transfer with an Idempotency-Key header.
+        if (serverRecords[key]) {
+          pushLog(`server: key ${key} already processed → replaying cached result`, 'ok');
+          return { replayed: true, amount: serverRecords[key].amount };
+        }
+        const amount = parsedAmount.value;
+        serverRecords[key] = { amount, at: Date.now() };
+        pushLog(`server: key ${key} not seen before → processing transfer of ${yen.format(amount)}`, 'ok');
+        if (willDropResponse) {
+          pushLog('network: response lost in transit (simulated)', 'warn');
+          return null; // client never sees this attempt succeed
+        }
+        return { replayed: false, amount };
+      }
+
+      async function confirmSend() {
+        sendState.value = 'sending';
+        await new Promise((r) => setTimeout(r, 550));
+
+        const dropThisAttempt = simulateFlaky.value && !serverRecords[idempotencyKey.value];
+        const result = simulatedServerCall(idempotencyKey.value, dropThisAttempt);
+
+        if (!result) {
+          sendState.value = 'error';
+          return;
+        }
+
+        if (!result.replayed) {
+          balance.value -= result.amount;
+          history.unshift({
+            id: 'tx_new_' + Date.now(),
+            out: true,
+            who: form.recipient,
+            amount: result.amount,
+            memo: form.memo,
+            date: new Date(),
+          });
+        } else {
+          pushLog('balance unchanged — this was a retry, not a new transfer', 'ok');
+        }
+
+        sendState.value = 'success';
+        setTimeout(() => {
+          showConfirm.value = false;
+          screen.value = 'history';
+          form.recipient = '';
+          form.amount = '';
+          form.memo = '';
+        }, 700);
+      }
+
+      // ---- virtualization ----
+      const rowHeight = 56;
+      const viewportHeight = 360;
+      const scrollTop = ref(0);
+      const overscan = 4;
+      const startIndex = computed(() => Math.max(0, Math.floor(scrollTop.value / rowHeight) - overscan));
+      const visibleCount = computed(() => Math.ceil(viewportHeight / rowHeight));
+      const endIndex = computed(() => Math.min(history.length, startIndex.value + visibleCount.value + overscan * 2));
+      const visibleRows = computed(() => history.slice(startIndex.value, endIndex.value));
+      const topPad = computed(() => startIndex.value * rowHeight);
+      const bottomPad = computed(() => (history.length - endIndex.value) * rowHeight);
+
+      // ---- split bill ----
+      const splitTotal = ref('3000');
+      const splitCount = ref(3);
+      const splitShares = computed(() => {
+        const total = Number(splitTotal.value.replace(/[,\s¥]/g, ''));
+        const n = Number(splitCount.value);
+        if (!Number.isFinite(total) || total <= 0 || !n || n < 2) return [];
+        const base = Math.floor(total / n);
+        const remainder = total % n;
+        return Array.from({ length: n }, (_, i) => base + (i < remainder ? 1 : 0));
+      });
+
+      function login() {
+        screen.value = 'dashboard';
+      }
+
+      const rail = computed(() => railContent[screen.value] || railContent.dashboard);
+
+      return {
+        screen,
+        email,
+        password,
+        balance,
+        history,
+        form,
+        showConfirm,
+        simulateFlaky,
+        sendState,
+        idempotencyKey,
+        log,
+        parsedAmount,
+        canReview,
+        openConfirm,
+        confirmSend,
+        scrollTop,
+        visibleRows,
+        topPad,
+        bottomPad,
+        startIndex,
+        endIndex,
+        splitTotal,
+        splitCount,
+        splitShares,
+        login,
+        rail,
+        yen: (v) => yen.format(v),
+      };
+    },
+    template: `
+      <div class="page">
+        <div class="masthead">
+          <div>
+            <h1>PayFlow</h1>
+            <p class="tagline">An interactive front-end demo — P2P payments, built to show the parts a payments product can't get wrong.</p>
+          </div>
+          <div class="badge-row">
+            <span class="badge">Vue 3 + TypeScript</span>
+            <span class="badge">Pinia</span>
+            <span class="badge">NestJS API (in source)</span>
+          </div>
+        </div>
+
+        <div class="layout">
+          <div class="device">
+            <div class="device-bar">
+              <span class="badge" style="margin-left:auto">payflow.app</span>
+            </div>
+            <div class="tabs">
+              <button class="tab" :class="{active: screen==='login'}" @click="screen='login'">Sign in</button>
+              <button class="tab" :class="{active: screen==='dashboard'}" @click="screen='dashboard'">Dashboard</button>
+              <button class="tab" :class="{active: screen==='send'}" @click="screen='send'">Send</button>
+              <button class="tab" :class="{active: screen==='history'}" @click="screen='history'">History</button>
+              <button class="tab" :class="{active: screen==='split'}" @click="screen='split'">Split</button>
+            </div>
+
+            <div class="screen">
+              <!-- LOGIN -->
+              <template v-if="screen==='login'">
+                <h3 class="heading" style="margin-top:4px">Welcome back</h3>
+                <p style="color:var(--text-muted); font-size:0.85rem; margin-top:0">Sign in to your account</p>
+                <label class="field-label">Email</label>
+                <input v-model="email" style="margin-bottom:12px" />
+                <label class="field-label">Password</label>
+                <input v-model="password" type="password" placeholder="password123" style="margin-bottom:16px" />
+                <button class="btn btn-primary" @click="login">Sign in</button>
+              </template>
+
+              <!-- DASHBOARD -->
+              <template v-else-if="screen==='dashboard'">
+                <div class="balance-card">
+                  <div class="label">Available balance</div>
+                  <div class="amount mono">{{ yen(balance) }}</div>
+                </div>
+                <div class="quick-actions">
+                  <button @click="screen='send'">Send</button>
+                  <button @click="screen='split'">Split bill</button>
+                  <button @click="screen='history'">History</button>
+                </div>
+                <p style="font-size:0.8rem; color:var(--text-muted)">
+                  Signed in as <strong>{{ email }}</strong>
+                </p>
+              </template>
+
+              <!-- SEND -->
+              <template v-else-if="screen==='send'">
+                <h3 class="heading" style="margin-top:4px">Send money</h3>
+                <label class="field-label">Recipient</label>
+                <input v-model="form.recipient" placeholder="usr_2" style="margin-bottom:12px" />
+                <label class="field-label">Amount (JPY)</label>
+                <input v-model="form.amount" inputmode="numeric" placeholder="1000" style="margin-bottom:12px" />
+                <label class="field-label">Memo (optional)</label>
+                <input v-model="form.memo" style="margin-bottom:14px" />
+
+                <div class="checkbox-row">
+                  <input type="checkbox" v-model="simulateFlaky" id="flaky" />
+                  <label for="flaky">Simulate a flaky network on the first attempt (to demo idempotent retry)</label>
+                </div>
+
+                <button class="btn btn-primary" :disabled="!canReview" @click="openConfirm">Review transfer</button>
+
+                <div v-if="showConfirm" class="modal-backdrop" @click.self="showConfirm=false">
+                  <div class="modal">
+                    <h3 class="heading" style="margin-top:0">Confirm transfer</h3>
+                    <div class="split-row"><span>To</span><strong>{{ form.recipient }}</strong></div>
+                    <div class="split-row"><span>Amount</span><strong class="mono">{{ yen(parsedAmount || 0) }}</strong></div>
+                    <div class="split-row" v-if="form.memo"><span>Memo</span><span>{{ form.memo }}</span></div>
+                    <div class="split-row" style="border-bottom:none">
+                      <span>Idempotency-Key</span><span class="mono" style="font-size:0.72rem">{{ idempotencyKey }}</span>
+                    </div>
+
+                    <p v-if="sendState==='error'" style="color:var(--danger); font-size:0.85rem">
+                      Network error — the request may already have gone through. Tap Retry; it's safe.
+                    </p>
+                    <p v-if="sendState==='success'" style="color:var(--success); font-size:0.85rem">Sent ✓</p>
+
+                    <div style="display:flex; gap:10px; margin-top:14px">
+                      <button class="btn btn-ghost" @click="showConfirm=false" :disabled="sendState==='sending'">Cancel</button>
+                      <button class="btn btn-accent" @click="confirmSend" :disabled="sendState==='sending'">
+                        {{ sendState==='sending' ? 'Sending…' : (sendState==='error' ? 'Retry' : 'Send') }}
+                      </button>
+                    </div>
+
+                    <div class="log-panel" v-if="log.length">
+                      <div v-for="(l,i) in log" :key="i" :class="l.cls">[{{ l.t }}] {{ l.msg }}</div>
+                    </div>
+                  </div>
+                </div>
+              </template>
+
+              <!-- HISTORY -->
+              <template v-else-if="screen==='history'">
+                <h3 class="heading" style="margin-top:4px">Transaction history</h3>
+                <div class="metric-strip">
+                  <span>Total rows: <strong>{{ history.length.toLocaleString() }}</strong></span>
+                  <span>DOM rows rendered: <strong>{{ visibleRows.length }}</strong></span>
+                </div>
+                <div class="virtual-viewport" @scroll="scrollTop = $event.target.scrollTop">
+                  <div :style="{height: topPad + 'px'}"></div>
+                  <div style="padding:0 12px">
+                    <div class="tx-row" v-for="tx in visibleRows" :key="tx.id">
+                      <div class="tx-icon" :class="tx.out ? 'out' : 'in'">{{ tx.out ? '↑' : '↓' }}</div>
+                      <div class="tx-meta">
+                        <div class="who">{{ tx.out ? 'To ' : 'From ' }}{{ tx.who }}</div>
+                        <div class="memo">{{ tx.memo || 'No memo' }}</div>
+                      </div>
+                      <div class="tx-amount mono" :class="tx.out ? 'out' : 'in'">
+                        {{ tx.out ? '-' : '+' }}{{ yen(tx.amount) }}
+                      </div>
+                    </div>
+                  </div>
+                  <div :style="{height: bottomPad + 'px'}"></div>
+                </div>
+              </template>
+
+              <!-- SPLIT -->
+              <template v-else-if="screen==='split'">
+                <h3 class="heading" style="margin-top:4px">Split a bill</h3>
+                <label class="field-label">Total amount (JPY)</label>
+                <input v-model="splitTotal" inputmode="numeric" style="margin-bottom:12px" />
+                <label class="field-label">Split between</label>
+                <input v-model.number="splitCount" type="number" min="2" max="20" style="margin-bottom:16px" />
+                <div v-for="(share,i) in splitShares" :key="i" class="split-row">
+                  <span>Person {{ i+1 }}</span><span class="mono">{{ yen(share) }}</span>
+                </div>
+              </template>
+            </div>
+          </div>
+
+          <div class="rail">
+            <div class="rail-card">
+              <div class="eyebrow">{{ rail.eyebrow }}</div>
+              <h3 class="heading">{{ rail.title }}</h3>
+              <p>{{ rail.body }}</p>
+              <div class="maps-to">
+                <span class="chip" v-for="t in rail.tags" :key="t">{{ t }}</span>
+              </div>
+            </div>
+            <div class="rail-card">
+              <div class="eyebrow">About this demo</div>
+              <p style="margin-bottom:0">
+                This page runs the same Vue 3 reactivity model as the real app, with a simulated backend so it can live
+                as a static page. The actual project ships a separate NestJS API with real JWT auth, class-validator DTOs,
+                rate limiting and an idempotency-key interceptor — the full source (frontend + backend + tests) is
+                included with this demo.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <footer class="note">PayFlow — portfolio demo. No real money moves here; balances reset on reload.</footer>
+      </div>
+    `,
+  }).mount('#app');
+</script>
+
+</body>
+</html>
