@@ -1,5 +1,14 @@
-.Fot-Rodin{
+Fot-Rodin{
 font-family: "fot-rodin-pron", sans-serif;
 font-weight: 600;
 font-style: normal;
+}
+
+@font-face {
+  font-family: 'fot-rodin', sans-serif;
+  src: url('fonts/FOT-Rodin Pro DB.otf') format('otf'),
+       url('fonts/FOT-Rodin Pro DB.otf') format('otf');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
 }
