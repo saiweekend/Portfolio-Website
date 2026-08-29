@@ -45,11 +45,53 @@
 
    <div class="blog-list reveal">
 
-      <!-- ═════ PAYFLOW · LIVE PROJECT ═════ -->
+      <!-- ═════ PULSEBOARD · LIVE PROJECT ═════ -->
       <article class="blog-post proj-featured">
         <div class="corner tl"></div>
         <div class="blog-head">
           <span class="blog-num">// 06</span>
+          <span class="blog-title">PULSEBOARD &middot; LIVE MONITORING</span>
+          <span class="blog-date proj-badge-live">&#9679; LIVE</span>
+          <span class="blog-toggle">+</span>
+        </div>
+        <div class="blog-body">
+          <div class="blog-body-inner">
+            <div class="blog-img">
+              <img src="/assets/img/programming/pulseboard-card.svg" alt="PulseBoard" loading="lazy" onerror="this.parentElement.innerHTML='<div class=&quot;blog-img-placeholder&quot;>PULSEBOARD</div>'">
+            </div>
+            <div class="blog-text">
+              <p>
+                A live transaction-monitoring dashboard built to demonstrate frontend performance
+                work directly instead of just claiming it. The feed table is virtualized so a
+                few-thousand-row feed never costs more than what's on screen, the chart bundle is
+                code-split and loaded on demand, and a Web Worker handles the rolling aggregation
+                off the main thread. A panel on the dashboard shows the page's own live Core Web
+                Vitals &mdash; the same numbers a RUM tool like New Relic Browser reports.
+              </p>
+              <p>
+                <strong>Stack:</strong> React 18 &middot; TypeScript &middot; react-window &middot; Express &middot; WebSocket<br>
+                <strong>Core mechanic:</strong> virtualized rendering, code-split charts, Web Worker aggregation, live Web Vitals
+              </p>
+              <p>The fraud rule that flags a burst:</p>
+              <pre class="proj-code" data-lang="TS">// 3+ transactions from the same user inside 60s
+const recent = history.filter(t =>
+  t.userId === tx.userId && tx.timestamp - t.timestamp &lt;= 60_000
+);
+const flagged = recent.length >= 3 || tx.amountMinor > 300_000;</pre>
+              <div class="proj-actions">
+                <a class="btn primary" href="https://claude.ai/code/artifact/d1d13080-112d-45bf-a84a-e83a2db28320" target="_blank" rel="noopener"><span>&#9656; Open Live Demo</span></a>
+                <a class="btn" href="https://github.com/saiweekend/PulseBoard" target="_blank" rel="noopener"><span>&#9671; View Source</span></a>
+              </div>
+              <div class="blog-sig">エンドオブソロウ | Signed 33xo.</div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- ═════ PAYFLOW · LIVE PROJECT ═════ -->
+      <article class="blog-post proj-featured">
+        <div class="blog-head">
+          <span class="blog-num">// 05</span>
           <span class="blog-title">PAYFLOW &middot; P2P PAYMENTS</span>
           <span class="blog-date proj-badge-live">&#9679; LIVE</span>
           <span class="blog-toggle">+</span>
@@ -80,50 +122,8 @@ const result = transfer(sender, recipient, amountMinor);
 store.save(idempotencyKey, result); // first time only
 return result;</pre>
               <div class="proj-actions">
-                <a class="btn primary" href="https://github.com/saiweekend/PulseBoard" target="_blank" rel="noopener"><span>&#9656; Open Live Demo</span></a>
+                <a class="btn primary" href="https://claude.ai/code/artifact/3a03357f-1c54-48c4-8e29-c123c11c28b3" target="_blank" rel="noopener"><span>&#9656; Open Live Demo</span></a>
                 <a class="btn" href="https://github.com/saiweekend/PayFlow" target="_blank" rel="noopener"><span>&#9671; View Source</span></a>
-              </div>
-              <div class="blog-sig">エンドオブソロウ | Signed 33xo.</div>
-            </div>
-          </div>
-        </div>
-      </article>
-
-      <!-- ═════ PULSEBOARD · LIVE PROJECT ═════ -->
-      <article class="blog-post proj-featured">
-        <div class="blog-head">
-          <span class="blog-num">// 05</span>
-          <span class="blog-title">PULSEBOARD &middot; LIVE MONITORING</span>
-          <span class="blog-date proj-badge-live">&#9679; LIVE</span>
-          <span class="blog-toggle">+</span>
-        </div>
-        <div class="blog-body">
-          <div class="blog-body-inner">
-            <div class="blog-img">
-              <img src="/assets/img/programming/pulseboard-card.svg" alt="PulseBoard" loading="lazy" onerror="this.parentElement.innerHTML='<div class=&quot;blog-img-placeholder&quot;>PULSEBOARD</div>'">
-            </div>
-            <div class="blog-text">
-              <p>
-                A live transaction-monitoring dashboard built to demonstrate frontend performance
-                work directly instead of just claiming it. The feed table is virtualized so a
-                few-thousand-row feed never costs more than what's on screen, the chart bundle is
-                code-split and loaded on demand, and a Web Worker handles the rolling aggregation
-                off the main thread. A panel on the dashboard shows the page's own live Core Web
-                Vitals &mdash; the same numbers a RUM tool like New Relic Browser reports.
-              </p>
-              <p>
-                <strong>Stack:</strong> React 18 &middot; TypeScript &middot; react-window &middot; Express &middot; WebSocket<br>
-                <strong>Core mechanic:</strong> virtualized rendering, code-split charts, Web Worker aggregation, live Web Vitals
-              </p>
-              <p>The fraud rule that flags a burst:</p>
-              <pre class="proj-code" data-lang="TS">// 3+ transactions from the same user inside 60s
-const recent = history.filter(t =>
-  t.userId === tx.userId && tx.timestamp - t.timestamp &lt;= 60_000
-);
-const flagged = recent.length >= 3 || tx.amountMinor > 300_000;</pre>
-              <div class="proj-actions">
-                <a class="btn primary" href="" target="_blank" rel="noopener"><span>&#9656; Open Live Demo</span></a>
-                <a class="btn" href="https://github.com/saiweekend/PulseBoard" target="_blank" rel="noopener"><span>&#9671; View Source</span></a>
               </div>
               <div class="blog-sig">エンドオブソロウ | Signed 33xo.</div>
             </div>
