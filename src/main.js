@@ -145,3 +145,67 @@ document.addEventListener('DOMContentLoaded',()=>{
     }
   });
 });
+
+/* ══════════════════════════════════════════════════════════════
+   LANGUAGE TOGGLE  (EN / 日本語)
+   Reads data-en and data-ja attributes on any element, swaps
+   textContent based on selected language. Persists to localStorage.
+   ══════════════════════════════════════════════════════════════ */
+(function initLangToggle(){
+  const STORAGE_KEY = 'saihallie_lang';
+  const DEFAULT_LANG = 'en';
+
+  function setLang(lang){
+    document.documentElement.lang = (lang === 'ja') ? 'ja' : 'en';
+    document.querySelectorAll('[data-en][data-ja]').forEach(el => {
+      const val = (lang === 'ja') ? el.dataset.ja : el.dataset.en;
+      if(val !== undefined) el.textContent = val;
+    });
+    // Also swap document title if it has data-en/ja
+    const titleEl = document.querySelector('title[data-en][data-ja]');
+    if(titleEl) document.title = titleEl.textContent;
+
+    // Update toggle button state
+    document.querySelectorAll('.lang-toggle').forEach(btn => {
+      btn.querySelectorAll('.lang-option').forEach(opt => {
+        opt.classList.toggle('active', opt.dataset.lang === lang);
+      });
+    });
+    try { localStorage.setItem(STORAGE_KEY, lang); } catch(e){}
+  }
+
+  function getLang(){
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if(saved === 'en' || saved === 'ja') return saved;
+    } catch(e){}
+    return DEFAULT_LANG;
+  }
+
+  // Wire up toggle buttons
+  function attachHandlers(){
+    document.querySelectorAll('.lang-toggle').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        // Determine target lang: click on span sets that lang, click elsewhere toggles
+        const opt = e.target.closest('.lang-option');
+        if(opt && opt.dataset.lang){
+          setLang(opt.dataset.lang);
+        } else {
+          const current = getLang();
+          setLang(current === 'ja' ? 'en' : 'ja');
+        }
+      });
+    });
+  }
+
+  // Apply on load
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', () => {
+      attachHandlers();
+      setLang(getLang());
+    });
+  } else {
+    attachHandlers();
+    setLang(getLang());
+  }
+})();

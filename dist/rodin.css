@@ -1,13 +1,12 @@
-Fot-Rodin{
-font-family: "fot-rodin-pron", sans-serif;
-font-weight: 600;
-font-style: normal;
-}
+/* ══════════════════════════════════════════════════════════════
+   FOT-Rodin Pro DB
+   The typeface used in NieR: Automata's UI.
+   Absolute path from site root so it works from any page depth.
+   ══════════════════════════════════════════════════════════════ */
 
 @font-face {
-  font-family: 'fot-rodin', sans-serif;
-  src: url('fonts/FOT-Rodin Pro DB.otf') format('otf'),
-       url('fonts/FOT-Rodin Pro DB.otf') format('otf');
+  font-family: 'fot-rodin-pron';
+  src: url('/fonts/FOT-Rodin-Pro-DB.otf') format('opentype');
   font-weight: normal;
   font-style: normal;
   font-display: swap;

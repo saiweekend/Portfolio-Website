@@ -5,9 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>C. Sai Hallie — Programming</title>
 <meta name="description" content="Audio systems, Wwise implementations, and game programming projects.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Share+Tech&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/dist/rodin.css">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -16,21 +14,26 @@
 <nav class="top">
   <div class="nav-id"><span class="lbl">ID:</span>CSH-AUDIO-01</div>
   <ul class="nav-links">
-    <li><a href="/index.html">Library</a></li>
-    <li><a href="programming.html" class="current">Programming</a></li>
-    <li><a href="art.html">Artwork</a></li>
-    <li><a href="blog.html">Journal</a></li>
-    <li><a href="about.html">Contact</a></li>
+    <li><a href="/index.html" data-en="Library" data-ja="ライブラリ">Library</a></li>
+    <li><a href="programming.html" class="current" data-en="Programming" data-ja="プログラミング">Programming</a></li>
+    <li><a href="art.html" data-en="Artwork" data-ja="アート">Artwork</a></li>
+    <li><a href="blog.html" data-en="Journal" data-ja="ジャーナル">Journal</a></li>
+    <li><a href="about.html" data-en="Contact" data-ja="コンタクト">Contact</a></li>
   </ul>
+  <button class="lang-toggle" aria-label="Toggle language" type="button">
+    <span class="lang-option" data-lang="en">EN</span>
+    <span class="lang-sep">/</span>
+    <span class="lang-option" data-lang="ja">日本語</span>
+  </button>
   <div class="nav-ver">v2.0 // 2025</div>
 </nav>
 
 <!-- ── PAGE HEAD ───────────────────────────────────────────── -->
 <header class="page-head">
   <div class="container page-head-inner">
-    <div class="page-eyebrow">Sector 02 // Audio Systems &amp; Development</div>
-    <h1 class="page-title scramble"><span class="accent">/</span> Programming</h1>
-    <div class="page-sub">Wwise · FMOD · C++ · Unreal Engine</div>
+    <div class="page-eyebrow"><span data-en="Sector 02 // Audio Systems & Development" data-ja="セクター 02 // 音響システム & 開発">Sector 02 // Audio Systems &amp; Development</span></div>
+    <h1 class="page-title scramble"><span class="accent">/</span><span data-en="Programming" data-ja="プログラミング"> Programming </span></h1>
+    <div class="page-sub"><span data-en="Wwise · FMOD · C++ · Unreal Engine" data-ja="Wwise · FMOD · C++ · Unreal Engine">Wwise · FMOD · C++ · Unreal Engine</span></div>
   </div>
 </header>
 
@@ -250,10 +253,10 @@ LIMIT 10;</pre>
   <div class="footer-inner">
     <div class="footer-brand">
       <div class="footer-quote">「Every step forward is one towards progress.」 #3A</div>
-      <div class="footer-note">C. SAI HALLIE // AUDIO DESIGNER</div>
+      <div class="footer-note"><span data-en="C. SAI HALLIE // AUDIO DESIGNER" data-ja="C. サイ・ハリー // オーディオデザイナー">C. SAI HALLIE // AUDIO DESIGNER</span></div>
     </div>
     <div>
-      <div class="footer-nav-lbl">Navigate</div>
+      <div class="footer-nav-lbl"><span data-en="Navigate" data-ja="ナビゲート">Navigate</span></div>
       <ul class="footer-nav">
         <li><a href="index.html"><span>Library</span></a></li>
         <li><a href="art.html"><span>Artwork</span></a></li>

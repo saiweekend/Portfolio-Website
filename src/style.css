@@ -229,10 +229,10 @@ main{min-height:calc(100vh - var(--nav-h) - 200px);}
 #embedContent iframe{width:100%;max-width:100%;border:none;display:block;margin:0 auto 0.8rem;}
 #embedContent img{
   display:block;
-  max-width:min(100%,300px);
+  width:100%;
   height:auto;
-  margin:1.2rem auto 1.5rem;
-  padding:8px;
+  margin:1.5rem auto 2rem;
+  padding:12px;
   background:var(--surface);
   border:1px solid var(--border-dim);
   transition:border-color 0.2s,transform 0.3s;
@@ -607,4 +607,26 @@ footer.main::before{
 /* Highlighted featured entry - subtle gold left border */
 .proj-featured{
   border-left:2px solid var(--gold-dim)!important;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   LANGUAGE TOGGLE
+   Sits in the nav, matches monospace aesthetic
+   ══════════════════════════════════════════════════════════════ */
+.lang-toggle{
+  display:inline-flex;align-items:center;gap:0.2rem;
+  font-family:var(--mono);font-size:0.62rem;
+  letter-spacing:0.15em;margin-left:1rem;
+  padding:0.25rem 0.5rem;border:1px solid var(--border);
+  background:transparent;cursor:pointer;color:var(--muted);
+  transition:color 0.2s,border-color 0.2s;
+}
+.lang-toggle:hover{color:var(--gold);border-color:var(--gold-dim);}
+.lang-toggle .lang-option{padding:0 0.25rem;transition:color 0.15s;}
+.lang-toggle .lang-option.active{color:var(--gold);font-weight:bold;}
+.lang-toggle .lang-sep{color:var(--border);}
+
+/* Compact nav on mobile keeps toggle visible */
+@media(max-width:640px){
+  .lang-toggle{margin-left:0.5rem;font-size:0.56rem;padding:0.2rem 0.4rem;}
 }
