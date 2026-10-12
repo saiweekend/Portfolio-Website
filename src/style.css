@@ -627,6 +627,6 @@ footer.main::before{
 .lang-toggle .lang-sep{color:var(--border);}
 
 /* Compact nav on mobile keeps toggle visible */
-@media(max-width:640px){
+@media(max-width:900px){
   .lang-toggle{margin-left:0.5rem;font-size:0.56rem;padding:0.2rem 0.4rem;}
 }
